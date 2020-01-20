@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Витек Коровин](https://up.htmlacademy.ru/javascript/19/user/156077).
-* Наставник: `Неизвестно`.
+* Наставник: `Денис Выхрыстюк`(https://htmlacademy.ru/profile/id568747).
 
 ---
 
