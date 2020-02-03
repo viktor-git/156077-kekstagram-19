@@ -1,10 +1,10 @@
 'use strict'
   var photos = [];
   var photo = {};
-
   var likeMin = 15;
   var likeMax = 200;
-
+  var avatarNumberMin = 1;
+  var avatarNumberMax = 6;
   var commentsText = ['Всё отлично!',
                   'В целом всё неплохо. Но не всё.',
                   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -14,31 +14,32 @@
   ];
   var names = ['Евлампия', 'Alalay-balalay', 'Акакий', 'Вася Имбицил'];
   var comments = [];
-  var randomMessage = '';
-  var randomAvatar = 0;
 
-  var randomInfo = function () {
-    randomMessage = commentsText[Math.round(Math.random() * (commentsText.length - 1))];
-    randomAvatar = Math.round(Math.random() * (6 - 1) + 1);
-    var comment = {
+  var getRandomInfo = function () {
+    var randomMessage = commentsText[Math.floor(Math.random() * commentsText.length)];
+    var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
+    var randomComment = {
       avatar: `../img/avatar-${randomAvatar}.svg`,
       message: randomMessage,
-      name: names[Math.round(Math.random() * (names.length - 1))]
+      name: names[Math.floor(Math.random() * names.length)]
     };
-    comments.push(comment);
+    comments.push(randomComment);
+    /*for (var i = 0; i < comments.length; i++) {
+      console.log(comments[i]);
+    }*/
   }
 
   var createPhotoDescr = function (copies) {
   for (var i = 1; i <= copies; i++) {
-    randomInfo();
+    getRandomInfo();
     photo['url'] = `photos/${i}.jpg`;
     photo['description'] = 'Описание моей фотографии такое классное';
-    photo['likes'] = Math.round(Math.random() * (likeMax - likeMin) + likeMin);
-    photo['comments'] = comments[Math.round(Math.random() * (comments.length - 1))];
+    photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
+    photo['comment'] = comments[Math.floor(Math.random() * comments.length)];
     photos.push(photo);
-     console.log(photos);
+    console.log(photos[i - 1].comment);
   }
 }
-createPhotoDescr(4);
+createPhotoDescr(25);
 
 
