@@ -1,22 +1,4 @@
 'use strict'
-  var photos = [];
-  var comments = [];
-
-  var likeMin = 15;
-  var likeMax = 200;
-
-  var avatarNumberMin = 1;
-  var avatarNumberMax = 6;
-
-  var commentsText = ['Всё отлично!',
-                  'В целом всё неплохо. Но не всё.',
-                  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-                  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-                  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-                  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ];
-  var names = ['Евлампия', 'Alalay-balalay', 'Акакий', 'Вася Имбицил'];
-
 //Добавляем метод рандомизации элементов массива
   Object.defineProperty(
     Object.prototype,
@@ -29,31 +11,53 @@
     }
 );
 
+  var avatarNumberMin = 1;
+  var avatarNumberMax = 6;
+  var commentsText = ['Всё отлично!',
+                  'В целом всё неплохо. Но не всё.',
+                  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+                  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+                  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+                  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+  ];
+  var names = ['Евлампия', 'Alalay-balalay', 'Акакий', 'Вася Имбицил'];
+  var comments = [];
 //Функция для создания массива рандомных комментариев к фото
-  var getRandomInfo = function () {
+  var getRandomComment = function (rand) {
     var randomMessage = commentsText.randElement();
     var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
+    if (rand === 0) {
+      comments = [];
+      return} else {
     var randomComment = {
       avatar: `img/avatar-${randomAvatar}.svg`,
       message: randomMessage,
       name: names.randElement()
     };
     comments.push(randomComment);
+    getRandomComment(rand - 1);
   }
+}
 
+  var likeMin = 15;
+  var likeMax = 200;
+  var photos = [];
 //Функция создания пользовательских объектов с фото
   var addPhotos = function (copies) {
   var photo = {};
   for (var i = 1; i <= copies; i++) {
     //debugger;
-    getRandomInfo();
+    var randomNum = Math.floor(Math.random() * (6 - 1) + 1);
+    getRandomComment(randomNum);
     photo['url'] = `photos/${i}.jpg`;
     photo['description'] = 'Описание моей фотографии такое классное';
     photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
-    photo['comment'] = comments.randElement();
+    photo['comment'] = comments;
+    console.log(photo.comment);
     var clonePhoto = Object.assign({}, photo);
-//Тут у меня какая-то ерунда с добавлением в массив photos. Все внутренние объекты получаются одинаковые,
-//причем в функции выше в массив comments попадают разные объекты без клонирования.
+//*Тут у меня какая-то ерунда с добавлением в массив photos. Все внутренние объекты получаются одинаковые без клонирования,
+//причем в функции выше в массив comments попадают разные объекты без него.
+//Возможно как-то с передачей по ссылке связано, но почему в одной случае работает без клона, а во втором нет - непонятно
     photos.push(clonePhoto);
   }
 }
@@ -69,7 +73,10 @@
       var newPhoto = pictureTemplate.cloneNode(true);
       newPhoto.querySelector('.picture__img').src = photos[i].url;
       newPhoto.querySelector('.picture__likes').textContent = photos[i].likes;
-      newPhoto.querySelector('.picture__comments').textContent = 1;
+    //*Тут не понял пока, как рандомно число комментов выводить под фото
+    //Можно getRandomComment завязать на возврате randomComment, а не на заполнении массива комментариев
+    //И далее в photo['comment'] передавать эту функцию
+      newPhoto.querySelector('.picture__comments').textContent = photos[i].comment.length;;
 
       fragment.append(newPhoto);
   }
