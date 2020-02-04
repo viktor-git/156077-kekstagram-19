@@ -11,8 +11,6 @@
     }
 );
 
-  var avatarNumberMin = 1;
-  var avatarNumberMax = 6;
   var commentsText = ['Всё отлично!',
                   'В целом всё неплохо. Но не всё.',
                   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -22,43 +20,44 @@
   ];
   var names = ['Евлампия', 'Alalay-balalay', 'Акакий', 'Вася Имбицил'];
   var comments = [];
+
 //Функция для создания массива рандомных комментариев к фото
-  var getRandomComment = function (rand) {
-    var randomMessage = commentsText.randElement();
-    var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
-    if (rand === 0) {
-      comments = [];
-      return} else {
-    var randomComment = {
+  var getRandomComment = function () {
+    var avatarNumberMin = 1;
+    var avatarNumberMax = 6;
+    var randomNum = Math.floor(Math.random() * (6 - 1) + 1);
+    for (var i = 0; i <= randomNum; i++) {
+      var randomMessage = commentsText.randElement();
+      var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
+      var randomComment = {
       avatar: `img/avatar-${randomAvatar}.svg`,
       message: randomMessage,
       name: names.randElement()
     };
     comments.push(randomComment);
-    getRandomComment(rand - 1);
+    }
   }
-}
 
-  var likeMin = 15;
-  var likeMax = 200;
   var photos = [];
+
 //Функция создания пользовательских объектов с фото
   var addPhotos = function (copies) {
+  var likeMin = 15;
+  var likeMax = 200;
   var photo = {};
   for (var i = 1; i <= copies; i++) {
-    //debugger;
-    var randomNum = Math.floor(Math.random() * (6 - 1) + 1);
-    getRandomComment(randomNum);
+    debugger;
+    getRandomComment();
     photo['url'] = `photos/${i}.jpg`;
     photo['description'] = 'Описание моей фотографии такое классное';
     photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
     photo['comment'] = comments;
-    console.log(photo.comment);
     var clonePhoto = Object.assign({}, photo);
-//*Тут у меня какая-то ерунда с добавлением в массив photos. Все внутренние объекты получаются одинаковые без клонирования,
-//причем в функции выше в массив comments попадают разные объекты без него.
-//Возможно как-то с передачей по ссылке связано, но почему в одной случае работает без клона, а во втором нет - непонятно
+/*Тут у меня какая-то ерунда с добавлением в массив photos. Все внутренние объекты получаются одинаковые без клонирования,
+причем в функции выше getRandomComment в массив comments попадают разные объекты без клона.
+Возможно как-то с передачей по ссылке связано, но почему в одном случае работает без клона, а во втором нет - непонятно*/
     photos.push(clonePhoto);
+    comments = [];
   }
 }
 
