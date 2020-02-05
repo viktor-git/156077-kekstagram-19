@@ -35,16 +35,18 @@
         name: names.randElement()
       };
       comments.push(randomComment);
-    }
-    return comments;
   }
+    return comments;
+}
 
 //Функция создания пользовательских объектов с фото
   var addPhotos = function (copies) {
+
     var likeMin = 15;
     var likeMax = 200;
     var photos = [];
     var photo = {};
+
     for (var i = 1; i <= copies; i++) {
       var photoComments = getRandomComments();
       photo['url'] = `photos/${i}.jpg`;
@@ -52,17 +54,16 @@
       photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
       photo['comment'] = photoComments;
       var clonePhoto = Object.assign({}, photo);
-  /*Тут у меня какая-то ерунда с добавлением в массив photos. Все внутренние объекты получаются одинаковые без клонирования,
-  причем в функции выше getRandomComment в массив comments попадают разные объекты без клона.
-  Возможно как-то с передачей по ссылке связано, но почему в одном случае работает без клона, а во втором нет - непонятно*/
       photos.push(clonePhoto);
-    }
+  }
     return photos;
 }
 
+  var userPhotos = addPhotos(25);
+
 //Создаем фрагмент с фото для добавления в DOM на основе шаблона
   var createPictures = function () {
-    var userPhotos = addPhotos(25);
+    console.log(userPhotos);
     var pictureTemplate = document.querySelector('#picture').content;
     var fragment = new DocumentFragment();
 
@@ -70,20 +71,71 @@
       var newPhoto = pictureTemplate.cloneNode(true);
       newPhoto.querySelector('.picture__img').src = userPhotos[i].url;
       newPhoto.querySelector('.picture__likes').textContent = userPhotos[i].likes;
-      newPhoto.querySelector('.picture__comments').textContent = userPhotos[i].comment.length;;
+      newPhoto.querySelector('.picture__comments').textContent = userPhotos[i].comment.length;
 
       fragment.append(newPhoto);
   }
+
     return fragment;
 }
 
-//Вставляем созданный фрагмент в DOM
+//Вставляем созданный фрагмент фотографий в DOM
   var addPicturesToDom = function () {
     document.querySelector('.pictures').append(createPictures());
 }
 
   addPicturesToDom();
 
+//Показываем увеличенное фото
+  var showBigPicture = function () {
+    var bigPicture = document.querySelector('.big-picture');
+    bigPicture.classList.remove('hidden');
+    fillBigPictureInfo(bigPicture);
+}
+
+//Заполняем информацией увеличенное фото
+  var fillBigPictureInfo = function (picture) {
+
+    var bigPictureImg = picture.querySelector('.big-picture__img img');
+    bigPictureImg.src = userPhotos[0].url;
+
+    var bigPictureDescr = picture.querySelector('.big-picture__social .social__caption');
+    bigPictureDescr.textContent = userPhotos[0].description;
+
+    var bigPictureLikes = picture.querySelector('.big-picture__social .likes-count');
+    bigPictureLikes.textContent = userPhotos[0].likes;
+
+    var bigPictureCommentsCount = picture.querySelector('.social__comment-count .comments-count');
+    bigPictureCommentsCount.textContent = userPhotos[0].comment.length;
+
+    addPictureComments(picture);
+}
+
+//Добавляем комментарии к увеличенному фото
+  var addPictureComments = function (picture) {
+
+    var bigPictureUserComments = picture.querySelector('.social__comments');
+    var bigPictureUserComment = bigPictureUserComments.querySelector('.social__comment');
+
+    var commentsFragment = new DocumentFragment();
+
+    for (var i = 0; i < userPhotos[0].comment.length; i++) {
+          var newComment = bigPictureUserComment.cloneNode(true);
+          newComment.querySelector('.social__picture').src = userPhotos[0].comment[i].avatar;
+          newComment.querySelector('.social__picture').alt = userPhotos[0].comment[i].name;
+          newComment.querySelector('.social__text').textContent = userPhotos[0].comment[i].message;
+
+          commentsFragment.append(newComment);
+      }
+
+    bigPictureUserComments.append(commentsFragment);
+}
+
+  showBigPicture();
+
+  document.querySelector('.social__comment-count').classList.add('hidden');
+  document.querySelector('.comments-loader').classList.add('hidden');
+  document.querySelector('body').classList.add('modal-open');
 
 
 
