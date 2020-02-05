@@ -30,7 +30,7 @@
       var randomMessage = commentsText.randElement();
       var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
       var randomComment = {
-        avatar: `img/avatar-${randomAvatar}.svg`,
+        avatar: 'img/avatar-' + randomAvatar + '.svg',
         message: randomMessage,
         name: names.randElement()
       };
@@ -49,7 +49,7 @@
 
     for (var i = 1; i <= copies; i++) {
       var photoComments = getRandomComments();
-      photo['url'] = `photos/${i}.jpg`;
+      photo['url'] = 'photos/' + i + '.jpg';
       photo['description'] = 'Описание моей фотографии такое классное';
       photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
       photo['comment'] = photoComments;
