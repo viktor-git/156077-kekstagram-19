@@ -56,6 +56,9 @@ var addPhotos = function (copies) {
   return photos;
 };
 
+// Получаем массив данных о фотографии
+var userPhotos = addPhotos(25);
+
 //  Создаем фрагмент с фото для добавления в DOM на основе шаблона
 var createPictures = function () {
   var pictureTemplate = document.querySelector('#picture').content;
@@ -78,39 +81,39 @@ var addPicturesToDom = function () {
   document.querySelector('.pictures').append(createPictures());
 };
 
-var userPhotos = addPhotos(25);
 addPicturesToDom();
+
+var bigPicture = document.querySelector('.big-picture');
 
 //  Показываем увеличенное фото
 var showBigPicture = function () {
   document.querySelector('body').classList.add('modal-open');
 
-  var bigPicture = document.querySelector('.big-picture');
   bigPicture.classList.remove('hidden');
 
-  fillBigPictureInfo(bigPicture);
+  fillBigPictureInfo();
 };
 
 //  Заполняем информацией увеличенное фото
-var fillBigPictureInfo = function (picture) {
-  var bigPictureImg = picture.querySelector('.big-picture__img img');
+var fillBigPictureInfo = function () {
+  var bigPictureImg = bigPicture.querySelector('.big-picture__img img');
   bigPictureImg.src = userPhotos[0].url;
 
-  var bigPictureDescr = picture.querySelector('.big-picture__social .social__caption');
+  var bigPictureDescr = bigPicture.querySelector('.big-picture__social .social__caption');
   bigPictureDescr.textContent = userPhotos[0].description;
 
-  var bigPictureLikes = picture.querySelector('.big-picture__social .likes-count');
+  var bigPictureLikes = bigPicture.querySelector('.big-picture__social .likes-count');
   bigPictureLikes.textContent = userPhotos[0].likes;
 
-  var bigPictureCommentsCount = picture.querySelector('.social__comment-count .comments-count');
+  var bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count .comments-count');
   bigPictureCommentsCount.textContent = userPhotos[0].comment.length;
 
-  addPictureComments(picture);
+  addPictureComments();
 };
 
 //  Добавляем комментарии к увеличенному фото
-var addPictureComments = function (picture) {
-  var bigPictureUserComments = picture.querySelector('.social__comments');
+var addPictureComments = function () {
+  var bigPictureUserComments = bigPicture.querySelector('.social__comments');
   var bigPictureUserComment = bigPictureUserComments.querySelector('.social__comment');
 
   var commentsFragment = new DocumentFragment();
