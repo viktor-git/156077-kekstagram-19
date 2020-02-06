@@ -63,7 +63,7 @@ var addPhotos = function (copies) {
   var photos = [];
 
   for (var i = 1; i <= copies; i++) {
-     photos.push(createPhoto(i));
+    photos.push(createPhoto(i));
   }
 
   return photos;
@@ -126,29 +126,29 @@ var fillBigPictureInfo = function (num) {
 };
 
 //  Получаем комментарии для добавления к фото
-var createPictureComment = function (comment) {
+var createPictureComment = function (num) {
 
-  var bigPictureUserComment = comment.querySelector('.social__comment').cloneNode(true);;
-console.log(bigPictureUserComment);
-  bigPictureUserComment.querySelector('.social__picture').src = userPhotos[num].comments[i].avatar;
-  bigPictureUserComment.querySelector('.social__picture').alt = userPhotos[num].comments[i].name;
-  bigPictureUserComment.querySelector('.social__text').textContent = userPhotos[num].comments[i].message;
 
-  return bigPictureUserComment;
 }
 
 //  Добавляем комментарии к увеличенному фото
 var addPictureComments = function (num) {
   var bigPictureUserComments = bigPicture.querySelector('.social__comments');
-  console.log(bigPictureUserComments );
+
   var commentsFragment = new DocumentFragment();
 
-  bigPictureUserComments.innerHTML = '';
-
   for (var i = 0; i < userPhotos[num].comments.length; i++) {
-    commentsFragment.append(createPictureComment(bigPictureUserComments));
+    var bigPictureUserComment = bigPictureUserComments.querySelector('.social__comment').cloneNode(true);
+
+    bigPictureUserComment.querySelector('.social__picture').src = userPhotos[num].comments[i].avatar;
+    bigPictureUserComment.querySelector('.social__picture').alt = userPhotos[num].comments[i].name;
+    bigPictureUserComment.querySelector('.social__text').textContent = userPhotos[num].comments[i].message;
+    console.log(userPhotos[num].comments.length)
+    console.log(bigPictureUserComment)
+    commentsFragment.append(bigPictureUserComment);
   }
 
+  bigPictureUserComments.innerHTML = '';
   bigPictureUserComments.append(commentsFragment);
 };
 
