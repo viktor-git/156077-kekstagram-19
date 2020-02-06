@@ -34,16 +34,18 @@ function getRandomNum (min, max) {
         name: getRandElement(names)
       };
       comments.push(randomComment);
-    }
-    return comments;
   }
+    return comments;
+}
 
 //Функция создания пользовательских объектов с фото
   var addPhotos = function (copies) {
+
     var likeMin = 15;
     var likeMax = 200;
     var photos = [];
     var photo = {};
+
     for (var i = 1; i <= copies; i++) {
       var photoComments = getRandomComments();
       photo['url'] = 'photos/' + i + '.jpg';
@@ -52,7 +54,7 @@ function getRandomNum (min, max) {
       photo['comment'] = photoComments;
       var clonePhoto = Object.assign({}, photo);
       photos.push(clonePhoto);
-    }
+  }
     return photos;
 }
 
@@ -66,21 +68,21 @@ function getRandomNum (min, max) {
       var newPhoto = pictureTemplate.cloneNode(true);
       newPhoto.querySelector('.picture__img').src = userPhotos[i].url;
       newPhoto.querySelector('.picture__likes').textContent = userPhotos[i].likes;
-      newPhoto.querySelector('.picture__comments').textContent = userPhotos[i].comment.length;;
+      newPhoto.querySelector('.picture__comments').textContent = userPhotos[i].comment.length;
 
       fragment.append(newPhoto);
   }
+
     return fragment;
 }
 
-//Вставляем созданный фрагмент в DOM
+//Вставляем созданный фрагмент фотографий в DOM
   var addPicturesToDom = function () {
     document.querySelector('.pictures').append(createPictures());
 }
 
   var userPhotos = addPhotos(25);
   addPicturesToDom();
-
 
 
 
