@@ -1,15 +1,13 @@
 'use strict'
-//Добавляем метод рандомизации элементов массива
-  Object.defineProperty(
-    Object.prototype,
-    'randElement',
-    {
-      value: function() {
-          var rand = Math.floor(Math.random() * this.length);
-          return this[rand];
-        }
-    }
-);
+//Добавляем функцию рандомизации элементов массива
+function getRandElement (arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
+  }
+
+//Добавляем функцию рандомизации чисел от мин до макс
+function getRandomNum (min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
   var commentsText = ['Всё отлично!',
                   'В целом всё неплохо. Но не всё.',
@@ -18,6 +16,7 @@
                   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
                   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
+
   var names = ['Евлампия', 'Alalay-balalay', 'Акакий', 'Вася Имбицил', 'Дрын Петрович', 'Марина Золотце'];
 
 //Функция для создания массива рандомных комментариев к фото
@@ -25,14 +24,14 @@
     var avatarNumberMin = 1;
     var avatarNumberMax = 6;
     var comments = [];
-    var randCommentsQuantity = Math.floor(Math.random() * (6 - 1) + 1);
+    var randCommentsQuantity = getRandomNum(1, 6);
     for (var i = 0; i <= randCommentsQuantity; i++) {
-      var randomMessage = commentsText.randElement();
-      var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
+      var randomMessage = getRandElement(commentsText);
+      var randomAvatar = getRandomNum(1, 6);
       var randomComment = {
         avatar: 'img/avatar-' + randomAvatar + '.svg',
         message: randomMessage,
-        name: names.randElement()
+        name: getRandElement(names)
       };
       comments.push(randomComment);
   }
@@ -51,7 +50,7 @@
       var photoComments = getRandomComments();
       photo['url'] = 'photos/' + i + '.jpg';
       photo['description'] = 'Описание моей фотографии такое классное';
-      photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
+      photo['likes'] = getRandomNum(15, 200);
       photo['comment'] = photoComments;
       var clonePhoto = Object.assign({}, photo);
       photos.push(clonePhoto);
@@ -63,7 +62,11 @@
 
 //Создаем фрагмент с фото для добавления в DOM на основе шаблона
   var createPictures = function () {
+<<<<<<< HEAD
     console.log(userPhotos);
+=======
+
+>>>>>>> module3-task2
     var pictureTemplate = document.querySelector('#picture').content;
     var fragment = new DocumentFragment();
 
@@ -84,6 +87,7 @@
     document.querySelector('.pictures').append(createPictures());
 }
 
+  var userPhotos = addPhotos(25);
   addPicturesToDom();
 
 //Показываем увеличенное фото
