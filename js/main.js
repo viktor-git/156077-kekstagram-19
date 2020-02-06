@@ -30,7 +30,7 @@
       var randomMessage = commentsText.randElement();
       var randomAvatar = Math.floor(Math.random() * (avatarNumberMax - avatarNumberMin) + avatarNumberMin);
       var randomComment = {
-        avatar: `img/avatar-${randomAvatar}.svg`,
+        avatar: 'img/avatar-' + randomAvatar + '.svg',
         message: randomMessage,
         name: names.randElement()
       };
@@ -47,14 +47,11 @@
     var photo = {};
     for (var i = 1; i <= copies; i++) {
       var photoComments = getRandomComments();
-      photo['url'] = `photos/${i}.jpg`;
+      photo['url'] = 'photos/' + i + '.jpg';
       photo['description'] = 'Описание моей фотографии такое классное';
       photo['likes'] = Math.floor(Math.random() * (likeMax - likeMin) + likeMin);
       photo['comment'] = photoComments;
       var clonePhoto = Object.assign({}, photo);
-  /*Тут у меня какая-то ерунда с добавлением в массив photos. Все внутренние объекты получаются одинаковые без клонирования,
-  причем в функции выше getRandomComment в массив comments попадают разные объекты без клона.
-  Возможно как-то с передачей по ссылке связано, но почему в одном случае работает без клона, а во втором нет - непонятно*/
       photos.push(clonePhoto);
     }
     return photos;
