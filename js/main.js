@@ -81,10 +81,10 @@ var createPicture = function (num) {
   pictureTemplateClone.querySelector('.picture__comments').textContent = userPhotos[num].comments.length;
 
   return pictureTemplateClone;
- }
+};
 
 //  Создаем фрагмент с фотографиями на основе шаблона добавления в DOM
-var createPictures = function () {
+var addPictures = function () {
   var fragment = new DocumentFragment();
 
   for (var i = 0; i < userPhotos.length; i++) {
@@ -95,7 +95,7 @@ var createPictures = function () {
 };
 
 //  Вставляем созданный фрагмент фотографий в DOM
-document.querySelector('.pictures').append(createPictures());
+document.querySelector('.pictures').append(addPictures());
 
 var bigPicture = document.querySelector('.big-picture');
 
@@ -125,11 +125,16 @@ var fillBigPictureInfo = function (num) {
   bigPictureCommentsCount.textContent = userPhotos[num].comments.length;
 };
 
-//  Получаем комментарии для добавления к фото
-var createPictureComment = function (num) {
+//  Получаем комментарий для добавления к фото
+var createPictureComment = function (num, item, comment) {
+  var bigPictureUserComment = comment.querySelector('.social__comment').cloneNode(true);
 
+  bigPictureUserComment.querySelector('.social__picture').src = userPhotos[num].comments[item].avatar;
+  bigPictureUserComment.querySelector('.social__picture').alt = userPhotos[num].comments[item].name;
+  bigPictureUserComment.querySelector('.social__text').textContent = userPhotos[num].comments[item].message;
 
-}
+  return bigPictureUserComment;
+};
 
 //  Добавляем комментарии к увеличенному фото
 var addPictureComments = function (num) {
@@ -138,14 +143,7 @@ var addPictureComments = function (num) {
   var commentsFragment = new DocumentFragment();
 
   for (var i = 0; i < userPhotos[num].comments.length; i++) {
-    var bigPictureUserComment = bigPictureUserComments.querySelector('.social__comment').cloneNode(true);
-
-    bigPictureUserComment.querySelector('.social__picture').src = userPhotos[num].comments[i].avatar;
-    bigPictureUserComment.querySelector('.social__picture').alt = userPhotos[num].comments[i].name;
-    bigPictureUserComment.querySelector('.social__text').textContent = userPhotos[num].comments[i].message;
-    console.log(userPhotos[num].comments.length)
-    console.log(bigPictureUserComment)
-    commentsFragment.append(bigPictureUserComment);
+    commentsFragment.append(createPictureComment(num, i, bigPictureUserComments));
   }
 
   bigPictureUserComments.innerHTML = '';
