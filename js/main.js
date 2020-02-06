@@ -2,12 +2,12 @@
 //  Добавляем функцию рандомизации элементов массива
 function getRandElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
-};
+}
 
 //  Добавляем функцию рандомизации чисел от мин до макс
 function getRandomNum(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
-};
+}
 
 var commentsText = ['Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -35,6 +35,7 @@ var getRandomComments = function () {
     };
     comments.push(randomComment);
   }
+
   return comments;
 };
 
@@ -53,6 +54,7 @@ var addPhotos = function (copies) {
     var clonePhoto = Object.assign({}, photo);
     photos.push(clonePhoto);
   }
+
   return photos;
 };
 
@@ -69,7 +71,7 @@ var createPictures = function () {
     newPhoto.querySelector('.picture__comments').textContent = userPhotos[i].comment.length;
 
     fragment.append(newPhoto);
-}
+  }
 
   return fragment;
 };
