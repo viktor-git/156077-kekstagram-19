@@ -62,11 +62,7 @@ function getRandomNum (min, max) {
 
 //Создаем фрагмент с фото для добавления в DOM на основе шаблона
   var createPictures = function () {
-<<<<<<< HEAD
-    console.log(userPhotos);
-=======
 
->>>>>>> module3-task2
     var pictureTemplate = document.querySelector('#picture').content;
     var fragment = new DocumentFragment();
 
