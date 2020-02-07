@@ -128,7 +128,7 @@ var fillBigPictureInfo = function (num) {
 var addPictureComments = function (num) {
   var pictureComments = createPictureComments(num);
 
-  var bigPictureUserComments =  bigPicture.querySelector('.social__comments');
+  var bigPictureUserComments = bigPicture.querySelector('.social__comments');
   bigPictureUserComments.innerHTML = '';
   bigPictureUserComments.append(pictureComments);
 
