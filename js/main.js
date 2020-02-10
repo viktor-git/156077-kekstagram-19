@@ -1,11 +1,11 @@
 'use strict';
 //  Добавляем функцию рандомизации элементов массива
-function getRandElement(arr) {
+var getRandElement = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 //  Добавляем функцию рандомизации чисел от мин до макс
-function getRandomNum(min, max) {
+var getRandomNum = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
@@ -30,18 +30,13 @@ var addPhotos = function (copies) {
   return photos;
 };
 
-//  Функция создания пользовательсого объекта с фото
-var createPhoto = function (num) {
-  var photo = {};
-
-  photo['url'] = 'photos/' + num + '.jpg';
-  photo['description'] = 'Описание моей фотографии такое классное';
-  photo['likes'] = getRandomNum(15, 200);
-  photo['comments'] = getRandomComments();
-
-  var clonePhoto = Object.assign({}, photo);
-
-  return clonePhoto;
+//  Функция для создания объекта с комментарием
+var createComment = function () {
+  return {
+    avatar: 'img/avatar-' + getRandomNum(1, 6) + '.svg',
+    message: getRandElement(commentsText),
+    name: getRandElement(names)
+  };
 };
 
 //  Функция для создания массива рандомных комментариев к фото
@@ -56,41 +51,39 @@ var getRandomComments = function () {
   return comments;
 };
 
-//  Функция для создания объекта с комментарием
-var createComment = function () {
-  var randomAvatar = getRandomNum(1, 6);
-  var randomComment = {
-    avatar: 'img/avatar-' + randomAvatar + '.svg',
-    message: getRandElement(commentsText),
-    name: getRandElement(names)
-  };
-
-  return randomComment;
+//  Функция создания пользовательсого объекта с фото
+var createPhoto = function (item) {
+  return {
+    url: 'photos/' + item + '.jpg',
+    description: 'Описание моей фотографии такое классное',
+    likes: getRandomNum(15, 200),
+    comments: getRandomComments()
+  }
 };
 
 // Получаем массив данных о фотографии
 var userPhotos = addPhotos(25);
+
+//  Создаем фото для добавления в DOM на основе шаблона
+var createPicture = function (picture) {
+  var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);
+
+  pictureTemplateClone.querySelector('.picture__img').src = picture.url;
+  pictureTemplateClone.querySelector('.picture__likes').textContent = picture.likes;
+  pictureTemplateClone.querySelector('.picture__comments').textContent = picture.comments.length;
+
+  return pictureTemplateClone;
+};
 
 //  Создаем фрагмент с фотографиями на основе шаблона добавления в DOM
 var addPictures = function () {
   var fragment = new DocumentFragment();
 
   for (var i = 0; i < userPhotos.length; i++) {
-    fragment.append(createPicture(i));
+    fragment.append(createPicture(userPhotos[i]));
   }
 
   return fragment;
-};
-
-//  Создаем фото для добавления в DOM на основе шаблона
-var createPicture = function (item) {
-  var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);
-
-  pictureTemplateClone.querySelector('.picture__img').src = userPhotos[item].url;
-  pictureTemplateClone.querySelector('.picture__likes').textContent = userPhotos[item].likes;
-  pictureTemplateClone.querySelector('.picture__comments').textContent = userPhotos[item].comments.length;
-
-  return pictureTemplateClone;
 };
 
 //  Вставляем созданный фрагмент фотографий в DOM
@@ -105,28 +98,28 @@ var showBigPicture = function () {
   bigPicture.classList.remove('hidden');
   var randomPictureNum = getRandomNum(0, userPhotos.length);
 
-  fillBigPictureInfo(randomPictureNum);
-  addPictureComments(randomPictureNum);
+  fillBigPictureInfo(userPhotos[randomPictureNum]);
+  addPictureComments(userPhotos[randomPictureNum]);
 };
 
 //  Заполняем информацией увеличенное фото
-var fillBigPictureInfo = function (num) {
+var fillBigPictureInfo = function (pictureNumber) {
   var bigPictureImg = bigPicture.querySelector('.big-picture__img img');
-  bigPictureImg.src = userPhotos[num].url;
+  bigPictureImg.src = pictureNumber.url;
 
   var bigPictureDescr = bigPicture.querySelector('.big-picture__social .social__caption');
-  bigPictureDescr.textContent = userPhotos[num].description;
+  bigPictureDescr.textContent = pictureNumber.description;
 
   var bigPictureLikes = bigPicture.querySelector('.big-picture__social .likes-count');
-  bigPictureLikes.textContent = userPhotos[num].likes;
+  bigPictureLikes.textContent = pictureNumber.likes;
 
   var bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count .comments-count');
-  bigPictureCommentsCount.textContent = userPhotos[num].comments.length;
+  bigPictureCommentsCount.textContent = pictureNumber.comments.length;
 };
 
 //  Добавляем комментарии к увеличенному фото
-var addPictureComments = function (num) {
-  var pictureComments = createPictureComments(num);
+var addPictureComments = function (pictureNumber) {
+  var pictureComments = createPictureComments(pictureNumber);
 
   var bigPictureUserComments = bigPicture.querySelector('.social__comments');
   bigPictureUserComments.innerHTML = '';
@@ -137,23 +130,23 @@ var addPictureComments = function (num) {
 };
 
 //  Создаем массив комментариев для добавления к фото
-var createPictureComments = function (num) {
+var createPictureComments = function (pictureNumber) {
   var commentsFragment = new DocumentFragment();
 
-  for (var i = 0; i < userPhotos[num].comments.length; i++) {
-    commentsFragment.append(createPictureComment(num, i));
+  for (var i = 0; i < pictureNumber.comments.length; i++) {
+    commentsFragment.append(createPictureComment(pictureNumber.comments[i]));
   }
 
   return commentsFragment;
 };
 
 //  Получаем комментарий для добавления к фото
-var createPictureComment = function (num, item) {
+var createPictureComment = function (pictureComment) {
   var bigPictureUserComment = document.querySelector('.social__comment').cloneNode(true);
 
-  bigPictureUserComment.querySelector('.social__picture').src = userPhotos[num].comments[item].avatar;
-  bigPictureUserComment.querySelector('.social__picture').alt = userPhotos[num].comments[item].name;
-  bigPictureUserComment.querySelector('.social__text').textContent = userPhotos[num].comments[item].message;
+  bigPictureUserComment.querySelector('.social__picture').src = pictureComment.avatar;
+  bigPictureUserComment.querySelector('.social__picture').alt = pictureComment.name;
+  bigPictureUserComment.querySelector('.social__text').textContent = pictureComment.message;
 
   return bigPictureUserComment;
 };
