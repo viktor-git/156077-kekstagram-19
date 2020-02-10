@@ -2,12 +2,12 @@
 //  Добавляем функцию рандомизации элементов массива
 var getRandElement = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
-}
+};
 
 //  Добавляем функцию рандомизации чисел от мин до макс
 var getRandomNum = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
-}
+};
 
 var commentsText = ['Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -58,7 +58,7 @@ var createPhoto = function (item) {
     description: 'Описание моей фотографии такое классное',
     likes: getRandomNum(15, 200),
     comments: getRandomComments()
-  }
+  };
 };
 
 // Получаем массив данных о фотографии
