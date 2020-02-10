@@ -1,11 +1,11 @@
 'use strict';
 //  Добавляем функцию рандомизации элементов массива
-function getRandElement(arr) {
+var getRandElement = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 //  Добавляем функцию рандомизации чисел от мин до макс
-function getRandomNum(min, max) {
+var getRandomNum = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
@@ -19,17 +19,24 @@ var commentsText = ['Всё отлично!',
 
 var names = ['Евлампия', 'Alalay-balalay', 'Акакий', 'Вася Имбицил', 'Дрын Петрович', 'Марина Золотце'];
 
+//  Функция создания пользовательсого массива объектов с фото
+var addPhotos = function (copies) {
+  var photos = [];
+
+  for (var i = 1; i <= copies; i++) {
+    photos.push(createPhoto(i));
+  }
+
+  return photos;
+};
 
 //  Функция для создания объекта с комментарием
 var createComment = function () {
-  var randomAvatar = getRandomNum(1, 6);
-  var randomComment = {
-    avatar: 'img/avatar-' + randomAvatar + '.svg',
+  return {
+    avatar: 'img/avatar-' + getRandomNum(1, 6) + '.svg',
     message: getRandElement(commentsText),
     name: getRandElement(names)
   };
-
-  return randomComment;
 };
 
 //  Функция для создания массива рандомных комментариев к фото
@@ -45,40 +52,25 @@ var getRandomComments = function () {
 };
 
 //  Функция создания пользовательсого объекта с фото
-var createPhoto = function (num) {
-  var photo = {};
-
-  photo['url'] = 'photos/' + num + '.jpg';
-  photo['description'] = 'Описание моей фотографии такое классное';
-  photo['likes'] = getRandomNum(15, 200);
-  photo['comments'] = getRandomComments();
-
-  var clonePhoto = Object.assign({}, photo);
-
-  return clonePhoto;
-};
-
-//  Функция создания пользовательсого массива объектов с фото
-var addPhotos = function (copies) {
-  var photos = [];
-
-  for (var i = 1; i <= copies; i++) {
-    photos.push(createPhoto(i));
+var createPhoto = function (item) {
+  return {
+    url: 'photos/' + item + '.jpg',
+    description: 'Описание моей фотографии такое классное',
+    likes: getRandomNum(15, 200),
+    comments: getRandomComments()
   }
-
-  return photos;
 };
 
 // Получаем массив данных о фотографии
 var userPhotos = addPhotos(25);
 
 //  Создаем фото для добавления в DOM на основе шаблона
-var createPicture = function (num) {
+var createPicture = function (picture) {
   var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);
 
-  pictureTemplateClone.querySelector('.picture__img').src = userPhotos[num].url;
-  pictureTemplateClone.querySelector('.picture__likes').textContent = userPhotos[num].likes;
-  pictureTemplateClone.querySelector('.picture__comments').textContent = userPhotos[num].comments.length;
+  pictureTemplateClone.querySelector('.picture__img').src = picture.url;
+  pictureTemplateClone.querySelector('.picture__likes').textContent = picture.likes;
+  pictureTemplateClone.querySelector('.picture__comments').textContent = picture.comments.length;
 
   return pictureTemplateClone;
 };
@@ -88,7 +80,7 @@ var addPictures = function () {
   var fragment = new DocumentFragment();
 
   for (var i = 0; i < userPhotos.length; i++) {
-    fragment.append(createPicture(i));
+    fragment.append(createPicture(userPhotos[i]));
   }
 
   return fragment;
