@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-//showBigPicture();
+showBigPicture();
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
 var closeBtn = document.querySelector('.img-upload__cancel');
@@ -161,14 +161,14 @@ var imgUploadHandler = function () {
   imgOption.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', btnCloseImgHandler);
-}
+};
 
 // Обработчик закрытия попапа с клавиши
 var btnCloseImgHandler = function (evt) {
-  if (evt.key === "Escape") {
+  if (evt.key === 'Escape') {
     closeImg();
   }
-}
+};
 
 // Функция закрытия изображения
 var closeImg = function () {
@@ -176,25 +176,9 @@ var closeImg = function () {
   document.body.classList.remove('modal-open');
   uploadBtn.value = '';
   document.removeEventListener('keydown', btnCloseImgHandler);
-}
+};
 
 uploadBtn.addEventListener('change', imgUploadHandler);
 closeBtn.addEventListener('click', function () {
-    closeImg();
+  closeImg();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
