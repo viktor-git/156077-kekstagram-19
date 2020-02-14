@@ -152,6 +152,7 @@ var createPictureComment = function (pictureComment) {
 };
 
 // showBigPicture();
+
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
 var closeBtn = imgOption.querySelector('.img-upload__cancel');
@@ -183,9 +184,12 @@ closeBtn.addEventListener('click', function () {
   closeImg();
 });
 
+// Добавление эффектов
 var imgPreview = imgOption.querySelector('.img-upload__preview img');
-var imgEfeectSlider =  document.querySelector('.img-upload__effect-level');
-imgEfeectSlider.style.display = 'none';
+
+var imgEffectSlider =  document.querySelector('.img-upload__effect-level');
+imgEffectSlider.classList.add('visually-hidden');
+
 var effectPin = imgOption.querySelector('.effect-level__pin');
 var effectLine = imgOption.querySelector('.effect-level__line');
 
@@ -195,66 +199,92 @@ var effectDepthStartValue = effectDepth.value / 100;
 // Вычисляем глубину эффекта
 var countDepthValue = function () {
    return (effectPin.offsetLeft / effectLine.clientWidth).toFixed(1);
-}
+};
 
-// Вычисляем конечную глубину эффекта
-effectPin.addEventListener('mouseup', function () {
+// Получаем глубину эффекта
+effectPin.addEventListener('mouseup', function (evt) {
   effectDepth.value = countDepthValue();
 });
 
+// Очищаем эффекты при переключении
 var clearEffects = function () {
    imgPreview.setAttribute('class', '');
    imgPreview.style.filter = '';
-}
+
+   if (imgEffectSlider.classList.contains('visually-hidden')) {
+      imgEffectSlider.classList.remove('visually-hidden');
+   }
+};
+
 // Накладываем выбранный эффект на фото
 imgOption.addEventListener('click', function (evt) {
   var target = evt.target;
+
   if (target.parentNode.classList.contains('effects__item')) {
+
     switch (imgOption.querySelector('input[type="radio"]:checked').value) {
     case 'none':
       clearEffects();
-      imgEfeectSlider.style.display = 'none';
+      imgEffectSlider.classList.add('visually-hidden');
       break;
 
     case 'chrome':
-      imgEfeectSlider.style.display = 'block';
       clearEffects();
-      effectDepth.value = effectDepthStartValue;
       imgPreview.classList.add('effects__preview--chrome');
-      imgPreview.style.filter = 'grayscale' + '(' + effectDepth.value +')';
       break;
 
     case 'sepia':
-      imgEfeectSlider.style.display = 'block';
       clearEffects();
-      effectDepth.value = effectDepthStartValue;
       imgPreview.classList.add('effects__preview--sepia');
-      imgPreview.style.filter = 'sepia' + '(' + effectDepth.value +')';
       break;
 
     case 'marvin':
-      imgEfeectSlider.style.display = 'block';
       clearEffects();
-      effectDepth.value = effectDepthStartValue;
       imgPreview.classList.add('effects__preview--marvin');
-      imgPreview.style.filter = 'invert' + '(' + (effectDepth.value * 100 + '%') +')';
       break;
 
     case 'phobos':
-      imgEfeectSlider.style.display = 'block';
       clearEffects();
-      effectDepth.value = effectDepthStartValue;
       imgPreview.classList.add('effects__preview--phobos');
-      imgPreview.style.filter = 'blur' + '(' + (effectDepth.value * 10) + 'px' + ')';
       break;
 
     case 'heat':
-      imgEfeectSlider.style.display = 'block';
       clearEffects();
-      effectDepth.value = effectDepthStartValue;
       imgPreview.classList.add('effects__preview--heat');
-      imgPreview.style.filter = 'brightness' + '(' + (effectDepth.value * 10) + ')';
       break;
     }
   }
+});
+
+// Изменение размеров изображения
+
+var sizeIncreaseBtn = imgOption.querySelector('.scale__control--bigger');
+var sizeDecreaseBtn = imgOption.querySelector('.scale__control--smaller');
+
+var sizeControl = imgOption.querySelector('.scale__control--value');
+sizeControl.value = 100 + '%';
+
+var sizeChangeStep = 25;
+
+var changeSizeValue = function (newSize) {
+  sizeControl.value = newSize + '%';
+  imgPreview.style.transform = 'scale(' + (newSize / 100) + ')';
+}
+
+var getIcreaseChangedValue = function (step, maxValue) {
+  var sizeControlChangeValue = Math.min(maxValue, parseInt(sizeControl.value) + step);
+  changeSizeValue(sizeControlChangeValue);
+}
+
+var getDecreaseChangedValue = function (step, minValue) {
+  var sizeControlChangeValue = Math.max(minValue, parseInt(sizeControl.value) - step);
+  changeSizeValue(sizeControlChangeValue);
+}
+
+sizeIncreaseBtn.addEventListener('click', function () {
+  getIcreaseChangedValue(25, 100);
+});
+
+sizeDecreaseBtn.addEventListener('click', function () {
+  getDecreaseChangedValue(25, 25);
 });
