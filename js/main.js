@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-// showBigPicture();
+showBigPicture();
 
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
@@ -194,26 +194,43 @@ var effectPin = imgOption.querySelector('.effect-level__pin');
 var effectLine = imgOption.querySelector('.effect-level__line');
 
 var effectDepth = imgOption.querySelector('.effect-level__value');
-var effectDepthStartValue = effectDepth.value / 100;
 
-// Вычисляем глубину эффекта
-var countDepthValue = function () {
-   return (effectPin.offsetLeft / effectLine.clientWidth).toFixed(1);
+var mouseMoveHandler = function (evtMove) {
+  var moveCoord = ((evtMove.clientX / effectLine.getBoundingClientRect().x) - 1) * 100 + '%';
+  if (parseInt(moveCoord) > 100) {
+    moveCoord = '100%';
+  }
+
+  if (parseInt(moveCoord) < 0) {
+    moveCoord = '0%';
+  }
+
+  effectPin.style.left = moveCoord;
+  document.querySelector('.effect-level__depth').style.width = moveCoord;
 };
 
-// Получаем глубину эффекта
-effectPin.addEventListener('mouseup', function (evt) {
-  effectDepth.value = countDepthValue();
+// Меняем глубину эффекта
+effectPin.addEventListener('mousedown', function () {
+  document.addEventListener('mousemove', mouseMoveHandler);
+
+  document.addEventListener('mouseup', function () {
+    document.removeEventListener('mousemove', mouseMoveHandler);
+  });
+});
+
+// Вычисляем глубину эффекта
+effectPin.addEventListener('mouseup', function () {
+  effectDepth.value = (effectPin.offsetLeft / effectLine.clientWidth).toFixed(1);;
 });
 
 // Очищаем эффекты при переключении
 var clearEffects = function () {
-   imgPreview.setAttribute('class', '');
-   imgPreview.style.filter = '';
+  imgPreview.setAttribute('class', '');
+  imgPreview.style.filter = '';
 
-   if (imgEffectSlider.classList.contains('visually-hidden')) {
-      imgEffectSlider.classList.remove('visually-hidden');
-   }
+  if (imgEffectSlider.classList.contains('visually-hidden')) {
+    imgEffectSlider.classList.remove('visually-hidden');
+  }
 };
 
 // Накладываем выбранный эффект на фото
@@ -257,29 +274,26 @@ imgOption.addEventListener('click', function (evt) {
 });
 
 // Изменение размеров изображения
-
 var sizeIncreaseBtn = imgOption.querySelector('.scale__control--bigger');
 var sizeDecreaseBtn = imgOption.querySelector('.scale__control--smaller');
 
 var sizeControl = imgOption.querySelector('.scale__control--value');
 sizeControl.value = 100 + '%';
 
-var sizeChangeStep = 25;
-
 var changeSizeValue = function (newSize) {
   sizeControl.value = newSize + '%';
   imgPreview.style.transform = 'scale(' + (newSize / 100) + ')';
-}
+};
 
 var getIcreaseChangedValue = function (step, maxValue) {
   var sizeControlChangeValue = Math.min(maxValue, parseInt(sizeControl.value) + step);
   changeSizeValue(sizeControlChangeValue);
-}
+};
 
 var getDecreaseChangedValue = function (step, minValue) {
   var sizeControlChangeValue = Math.max(minValue, parseInt(sizeControl.value) - step);
   changeSizeValue(sizeControlChangeValue);
-}
+};
 
 sizeIncreaseBtn.addEventListener('click', function () {
   getIcreaseChangedValue(25, 100);
