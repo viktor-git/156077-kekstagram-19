@@ -243,32 +243,32 @@ imgOption.addEventListener('click', function (evt) {
       case 'none':
         clearEffects();
         imgEffectSlider.classList.add('visually-hidden');
-      break;
+        break;
 
       case 'chrome':
         clearEffects();
         imgPreview.classList.add('effects__preview--chrome');
-      break;
+        break;
 
       case 'sepia':
         clearEffects();
         imgPreview.classList.add('effects__preview--sepia');
-      break;
+        break;
 
       case 'marvin':
         clearEffects();
         imgPreview.classList.add('effects__preview--marvin');
-      break;
+        break;
 
       case 'phobos':
         clearEffects();
         imgPreview.classList.add('effects__preview--phobos');
-      break;
+        break;
 
       case 'heat':
         clearEffects();
         imgPreview.classList.add('effects__preview--heat');
-      break;
+        break;
     }
   }
 });
