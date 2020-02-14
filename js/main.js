@@ -187,7 +187,7 @@ closeBtn.addEventListener('click', function () {
 // Добавление эффектов
 var imgPreview = imgOption.querySelector('.img-upload__preview img');
 
-var imgEffectSlider =  document.querySelector('.img-upload__effect-level');
+var imgEffectSlider = document.querySelector('.img-upload__effect-level');
 imgEffectSlider.classList.add('visually-hidden');
 
 var effectPin = imgOption.querySelector('.effect-level__pin');
@@ -197,11 +197,11 @@ var effectDepth = imgOption.querySelector('.effect-level__value');
 
 var mouseMoveHandler = function (evtMove) {
   var moveCoord = ((evtMove.clientX / effectLine.getBoundingClientRect().x) - 1) * 100 + '%';
-  if (parseInt(moveCoord) > 100) {
+  if (parseInt(moveCoord, 10) > 100) {
     moveCoord = '100%';
   }
 
-  if (parseInt(moveCoord) < 0) {
+  if (parseInt(moveCoord, 10) < 0) {
     moveCoord = '0%';
   }
 
@@ -220,7 +220,7 @@ effectPin.addEventListener('mousedown', function () {
 
 // Вычисляем глубину эффекта
 effectPin.addEventListener('mouseup', function () {
-  effectDepth.value = (effectPin.offsetLeft / effectLine.clientWidth).toFixed(1);;
+  effectDepth.value = (effectPin.offsetLeft / effectLine.clientWidth).toFixed(1);
 });
 
 // Очищаем эффекты при переключении
@@ -240,34 +240,34 @@ imgOption.addEventListener('click', function (evt) {
   if (target.parentNode.classList.contains('effects__item')) {
 
     switch (imgOption.querySelector('input[type="radio"]:checked').value) {
-    case 'none':
-      clearEffects();
-      imgEffectSlider.classList.add('visually-hidden');
+      case 'none':
+        clearEffects();
+        imgEffectSlider.classList.add('visually-hidden');
       break;
 
-    case 'chrome':
-      clearEffects();
-      imgPreview.classList.add('effects__preview--chrome');
+      case 'chrome':
+        clearEffects();
+        imgPreview.classList.add('effects__preview--chrome');
       break;
 
-    case 'sepia':
-      clearEffects();
-      imgPreview.classList.add('effects__preview--sepia');
+      case 'sepia':
+        clearEffects();
+        imgPreview.classList.add('effects__preview--sepia');
       break;
 
-    case 'marvin':
-      clearEffects();
-      imgPreview.classList.add('effects__preview--marvin');
+      case 'marvin':
+        clearEffects();
+        imgPreview.classList.add('effects__preview--marvin');
       break;
 
-    case 'phobos':
-      clearEffects();
-      imgPreview.classList.add('effects__preview--phobos');
+      case 'phobos':
+        clearEffects();
+        imgPreview.classList.add('effects__preview--phobos');
       break;
 
-    case 'heat':
-      clearEffects();
-      imgPreview.classList.add('effects__preview--heat');
+      case 'heat':
+        clearEffects();
+        imgPreview.classList.add('effects__preview--heat');
       break;
     }
   }
@@ -286,12 +286,12 @@ var changeSizeValue = function (newSize) {
 };
 
 var getIcreaseChangedValue = function (step, maxValue) {
-  var sizeControlChangeValue = Math.min(maxValue, parseInt(sizeControl.value) + step);
+  var sizeControlChangeValue = Math.min(maxValue, parseInt(sizeControl.value, 10) + step);
   changeSizeValue(sizeControlChangeValue);
 };
 
 var getDecreaseChangedValue = function (step, minValue) {
-  var sizeControlChangeValue = Math.max(minValue, parseInt(sizeControl.value) - step);
+  var sizeControlChangeValue = Math.max(minValue, parseInt(sizeControl.value, 10) - step);
   changeSizeValue(sizeControlChangeValue);
 };
 
