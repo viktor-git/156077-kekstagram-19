@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-//showBigPicture();
+showBigPicture();
 
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
@@ -289,7 +289,7 @@ var setPhotoStartSettings = function () {
   sizeControl.value = 100 + '%';
   imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
   imgEffectSlider.classList.add('visually-hidden');
-}
+};
 
 var changeSizeValue = function (newSize) {
   sizeControl.value = newSize + '%';
