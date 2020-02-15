@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-showBigPicture();
+//showBigPicture();
 
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
@@ -162,6 +162,8 @@ var imgUploadHandler = function () {
   imgOption.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', btnCloseImgHandler);
+  clearEffects();
+  setPhotoStartSettings();
 };
 
 // Обработчик закрытия попапа с клавиши
@@ -192,6 +194,7 @@ imgEffectSlider.classList.add('visually-hidden');
 
 var effectPin = imgOption.querySelector('.effect-level__pin');
 var effectLine = imgOption.querySelector('.effect-level__line');
+var effectLineDepth = document.querySelector('.effect-level__depth');
 
 var effectDepth = imgOption.querySelector('.effect-level__value');
 
@@ -206,7 +209,7 @@ var mouseMoveHandler = function (evtMove) {
   }
 
   effectPin.style.left = moveCoord;
-  document.querySelector('.effect-level__depth').style.width = moveCoord;
+  effectLineDepth.style.width = moveCoord;
 };
 
 // Меняем глубину эффекта
@@ -231,6 +234,9 @@ var clearEffects = function () {
   if (imgEffectSlider.classList.contains('visually-hidden')) {
     imgEffectSlider.classList.remove('visually-hidden');
   }
+
+  effectPin.style.left = '100%';
+  effectLineDepth.style.width = '100%';
 };
 
 // Накладываем выбранный эффект на фото
@@ -278,7 +284,12 @@ var sizeIncreaseBtn = imgOption.querySelector('.scale__control--bigger');
 var sizeDecreaseBtn = imgOption.querySelector('.scale__control--smaller');
 
 var sizeControl = imgOption.querySelector('.scale__control--value');
-sizeControl.value = 100 + '%';
+
+var setPhotoStartSettings = function () {
+  sizeControl.value = 100 + '%';
+  imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
+  imgEffectSlider.classList.add('visually-hidden');
+}
 
 var changeSizeValue = function (newSize) {
   sizeControl.value = newSize + '%';
