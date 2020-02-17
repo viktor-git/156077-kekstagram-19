@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-showBigPicture();
+//showBigPicture();
 
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
@@ -198,32 +198,43 @@ var effectLineDepth = document.querySelector('.effect-level__depth');
 
 var effectDepth = imgOption.querySelector('.effect-level__value');
 
-var mouseMoveHandler = function (evtMove) {
-  var moveCoord = ((evtMove.clientX / effectLine.getBoundingClientRect().x) - 1) * 100 + '%';
-  if (parseInt(moveCoord, 10) > 100) {
-    moveCoord = '100%';
-  }
-
-  if (parseInt(moveCoord, 10) < 0) {
-    moveCoord = '0%';
-  }
-
-  effectPin.style.left = moveCoord;
-  effectLineDepth.style.width = moveCoord;
-};
-
 // Меняем глубину эффекта
-effectPin.addEventListener('mousedown', function () {
-  document.addEventListener('mousemove', mouseMoveHandler);
+effectPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
 
-  document.addEventListener('mouseup', function () {
+  var startCoords = evt.clientX;
+
+  var mouseMoveHandler = function (evtMove) {
+    evtMove.preventDefault();
+
+    var shift = startCoords - evtMove.clientX;
+    startCoords = evtMove.clientX;
+
+    var endPinPosition = (effectPin.offsetLeft - shift) / effectLine.clientWidth * 100;
+
+    if (endPinPosition > 100) {
+      endPinPosition = 100;
+    }
+
+    if (endPinPosition < 0) {
+      endPinPosition = 0;
+    }
+
+    effectPin.style.left = endPinPosition + '%';
+    effectLineDepth.style.width = endPinPosition + '%';
+  };
+
+  var mouseUpHandler = function (evtUp) {
+    evtUp.preventDefault();
+
+    effectDepth.value = parseInt(effectPin.style.left, 10);
+
     document.removeEventListener('mousemove', mouseMoveHandler);
-  });
-});
+    document.removeEventListener('mouseup', mouseUpHandler);
+  };
 
-// Вычисляем глубину эффекта
-effectPin.addEventListener('mouseup', function () {
-  effectDepth.value = (effectPin.offsetLeft / effectLine.clientWidth).toFixed(1);
+  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mouseup', mouseUpHandler);
 });
 
 // Очищаем эффекты при переключении
@@ -254,6 +265,7 @@ imgOption.addEventListener('click', function (evt) {
       case 'chrome':
         clearEffects();
         imgPreview.classList.add('effects__preview--chrome');
+
         break;
 
       case 'sepia':
