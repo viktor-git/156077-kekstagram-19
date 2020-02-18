@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-//showBigPicture();
+showBigPicture();
 
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
@@ -228,6 +228,33 @@ effectPin.addEventListener('mousedown', function (evt) {
     evtUp.preventDefault();
 
     effectDepth.value = parseInt(effectPin.style.left, 10);
+
+    var setEffecsDepth = function () {
+      switch (imgOption.querySelector('input[type="radio"]:checked').value) {
+        case 'chrome':
+          imgPreview.style.filter = 'grayscale(' + (effectDepth.value / 100) + ')';
+          break;
+
+        case 'sepia':
+          imgPreview.style.filter = 'sepia(' + (effectDepth.value / 100) + ')';
+          break;
+
+        case 'marvin':
+          imgPreview.style.filter = 'invert(' + effectDepth.value + '%' + ')';
+          break;
+
+        case 'phobos':
+          imgPreview.style.filter = 'blur(' + (3 * effectDepth.value / 100) + 'px' + ')';
+          break;
+
+        case 'heat':
+          var brightnessDepth = 3 * effectDepth.value / 100;
+          imgPreview.style.filter = 'brightness(' + Math.max(1, brightnessDepth) + ')';
+          break;
+      }
+    };
+
+    setEffecsDepth();
 
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
