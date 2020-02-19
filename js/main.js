@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-showBigPicture();
+//showBigPicture();
 
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
@@ -249,7 +249,7 @@ effectPin.addEventListener('mousedown', function (evt) {
 
         case 'heat':
           var brightnessDepth = 3 * effectDepth.value / 100;
-          imgPreview.style.filter = 'brightness(' + Math.max(1, brightnessDepth) + ')';
+          imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
           break;
       }
     };
