@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-//showBigPicture();
+showBigPicture();
 
 // Загрузка изображений
 var imgOption = document.querySelector('.img-upload__overlay');
@@ -391,48 +391,48 @@ document.querySelector('#upload-select-image').addEventListener('submit', functi
 var validateHashTags = function (evt) {
   evt.preventDefault();
   var hashTags = imgHashTag.value.toLowerCase().split(' ');
-// Проверка количества хештегов
+  // Проверка количества хештегов
   if (hashTags.length > 5) {
-// console.log('Нельзя указывать более 5 хештегов');
+    // console.log('Нельзя указывать более 5 хештегов');
     imgHashTag.setCustomValidity('Нельзя указывать более 5 хештегов');
     return;
   } else {
     imgHashTag.setCustomValidity('');
   }
-// Проверка на пустой хештег
+  // Проверка на пустой хештег
   if (hashTags.length === 1 && hashTags[0] === '') {
-// console.log('Пустой массив')
+    // console.log('Пустой массив')
     return;
   } else {
-// Проверка на # в начале
+    // Проверка на # в начале
     for (var i = 0; i < hashTags.length; i++) {
-// console.log('Хеш ' + i + ': ' + hashTags[i]);
+      // console.log('Хеш ' + i + ': ' + hashTags[i]);
       if (hashTags[i].charAt(0) !== '#') {
-// console.log('Хештег должен начинаться с решетки');
+        // console.log('Хештег должен начинаться с решетки');
         return;
       }
 
-// Проверка запрещенных символов
+      // Проверка запрещенных символов
       for (var j = 1; j < hashTags[i].length; j++) {
 
         if (hashTags[i][j].match(/^\W$/gi) && hashTags[i][j].match(/[^А-ЯЁ]/gi)) {
-// console.log('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
+          // console.log('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
           break;
         }
       }
-// Проверка длины хештега
+      // Проверка длины хештега
       if (hashTags[i].length > 20) {
-// console.log('Хештег не должен превышать 20 символов, включая #');
+        // console.log('Хештег не должен превышать 20 символов, включая #');
         return;
       }
-// Проверка на односимвольность
-      if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#' ) {
-// console.log('Хештег пустой');
+      // Проверка на односимвольность
+      if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#') {
+        // console.log('Хештег пустой');
         return;
       }
-// Проверка на дубли
+      // Проверка на дубли
       if (hashTags.indexOf(hashTags[i], i + 1) !== -1) {
-// console.log('Дублируется хештег: ' + hashTags[i]);
+        // console.log('Дублируется хештег: ' + hashTags[i]);
         return;
       }
     }
