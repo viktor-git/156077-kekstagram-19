@@ -57,7 +57,7 @@ var createPhoto = function (item) {
     url: 'photos/' + item + '.jpg',
     description: 'Описание моей фотографии такое классное',
     likes: getRandomNum(15, 200),
-    comments: getRandomComments()
+    comments: getRandomComments(),
   };
 };
 
@@ -65,13 +65,13 @@ var createPhoto = function (item) {
 var userPhotos = addPhotos(25);
 
 //  Создаем фото для добавления в DOM на основе шаблона
-var createPicture = function (picture) {
+var createPicture = function (picture, arrItem) {
   var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);
 
   pictureTemplateClone.querySelector('.picture__img').src = picture.url;
   pictureTemplateClone.querySelector('.picture__likes').textContent = picture.likes;
   pictureTemplateClone.querySelector('.picture__comments').textContent = picture.comments.length;
-
+  pictureTemplateClone.querySelector('.picture').setAttribute('data-id', arrItem);
   return pictureTemplateClone;
 };
 
@@ -80,7 +80,7 @@ var addPictures = function () {
   var fragment = new DocumentFragment();
 
   for (var i = 0; i < userPhotos.length; i++) {
-    fragment.append(createPicture(userPhotos[i]));
+    fragment.append(createPicture(userPhotos[i], i));
   }
 
   return fragment;
@@ -226,7 +226,7 @@ effectPin.addEventListener('mousedown', function (evt) {
 
   var mouseUpHandler = function (evtUp) {
     evtUp.preventDefault();
-
+    console.log(evtUp.type);
     effectDepth.value = parseInt(effectPin.style.left, 10);
 
     var setEffecsDepth = function () {
@@ -248,7 +248,6 @@ effectPin.addEventListener('mousedown', function (evt) {
           break;
 
         case 'heat':
-          var brightnessDepth = 3 * effectDepth.value / 100;
           imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
           break;
       }
@@ -328,6 +327,7 @@ var setPhotoStartSettings = function () {
   sizeControl.value = 100 + '%';
   imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
   imgEffectSlider.classList.add('visually-hidden');
+  effectDepth.value = 100;
 };
 
 var changeSizeValue = function (newSize) {
@@ -352,3 +352,6 @@ sizeIncreaseBtn.addEventListener('click', function () {
 sizeDecreaseBtn.addEventListener('click', function () {
   getDecreaseChangedValue(25, 25);
 });
+
+// Валидация хеш-тегов
+
