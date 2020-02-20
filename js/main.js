@@ -198,6 +198,73 @@ var effectLineDepth = document.querySelector('.effect-level__depth');
 
 var effectDepth = imgOption.querySelector('.effect-level__value');
 
+// Функция установки глубины эффекта
+var setEffecsDepth = function (evt) {
+  switch (imgOption.querySelector('input[type="radio"]:checked').value) {
+    case 'none':
+      if (evt.type === 'click') {
+        clearEffects();
+        imgEffectSlider.classList.add('visually-hidden');
+      }
+      break;
+
+    case 'chrome':
+      if (evt.type === 'click') {
+        clearEffects();
+        imgPreview.classList.add('effects__preview--chrome');
+      }
+
+      if (evt.type === 'mouseup'){
+        imgPreview.style.filter = 'grayscale(' + (effectDepth.value / 100) + ')';
+      }
+      break;
+
+    case 'sepia':
+      if (evt.type === 'click') {
+        clearEffects();
+        imgPreview.classList.add('effects__preview--sepia');
+      }
+
+      if (evt.type === 'mouseup'){
+        imgPreview.style.filter = 'sepia(' + (effectDepth.value / 100) + ')';
+      }
+      break;
+
+    case 'marvin':
+      if (evt.type === 'click') {
+        clearEffects();
+        imgPreview.classList.add('effects__preview--marvin');
+      }
+
+      if (evt.type === 'mouseup'){
+        imgPreview.style.filter = 'invert(' + effectDepth.value + '%' + ')';
+      }
+      break;
+
+    case 'phobos':
+      if (evt.type === 'click') {
+        clearEffects();
+        imgPreview.classList.add('effects__preview--phobos');
+      }
+
+      if (evt.type === 'mouseup'){
+        imgPreview.style.filter = 'blur(' + (3 * effectDepth.value / 100) + 'px' + ')';
+      }
+      break;
+
+    case 'heat':
+      if (evt.type === 'click') {
+        clearEffects();
+        imgPreview.classList.add('effects__preview--phobos');
+      }
+
+      if (evt.type === 'mouseup'){
+        imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
+      }
+      break;
+  }
+};
+
 // Меняем глубину эффекта
 effectPin.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
@@ -226,34 +293,9 @@ effectPin.addEventListener('mousedown', function (evt) {
 
   var mouseUpHandler = function (evtUp) {
     evtUp.preventDefault();
-    console.log(evtUp.type);
     effectDepth.value = parseInt(effectPin.style.left, 10);
 
-    var setEffecsDepth = function () {
-      switch (imgOption.querySelector('input[type="radio"]:checked').value) {
-        case 'chrome':
-          imgPreview.style.filter = 'grayscale(' + (effectDepth.value / 100) + ')';
-          break;
-
-        case 'sepia':
-          imgPreview.style.filter = 'sepia(' + (effectDepth.value / 100) + ')';
-          break;
-
-        case 'marvin':
-          imgPreview.style.filter = 'invert(' + effectDepth.value + '%' + ')';
-          break;
-
-        case 'phobos':
-          imgPreview.style.filter = 'blur(' + (3 * effectDepth.value / 100) + 'px' + ')';
-          break;
-
-        case 'heat':
-          imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
-          break;
-      }
-    };
-
-    setEffecsDepth();
+    setEffecsDepth(evtUp);
 
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
@@ -281,39 +323,7 @@ imgOption.addEventListener('click', function (evt) {
   var target = evt.target;
 
   if (target.parentNode.classList.contains('effects__item')) {
-
-    switch (imgOption.querySelector('input[type="radio"]:checked').value) {
-      case 'none':
-        clearEffects();
-        imgEffectSlider.classList.add('visually-hidden');
-        break;
-
-      case 'chrome':
-        clearEffects();
-        imgPreview.classList.add('effects__preview--chrome');
-
-        break;
-
-      case 'sepia':
-        clearEffects();
-        imgPreview.classList.add('effects__preview--sepia');
-        break;
-
-      case 'marvin':
-        clearEffects();
-        imgPreview.classList.add('effects__preview--marvin');
-        break;
-
-      case 'phobos':
-        clearEffects();
-        imgPreview.classList.add('effects__preview--phobos');
-        break;
-
-      case 'heat':
-        clearEffects();
-        imgPreview.classList.add('effects__preview--heat');
-        break;
-    }
+    setEffecsDepth(evt);
   }
 });
 
