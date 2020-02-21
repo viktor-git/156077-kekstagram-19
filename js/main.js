@@ -170,7 +170,6 @@ var imgUploadHandler = function () {
 // Обработчик закрытия попапа с клавиши
 var btnCloseImgHandler = function (evt) {
   if (evt.key === 'Escape') {
-    alert('123');
     closeImg();
   }
 };
@@ -388,7 +387,6 @@ document.querySelector('#upload-submit').addEventListener('click', function() {
 });
 
 var validateHashTags = function () {
-  console.log('Я сделяль');
   var hashTags = imgHashTag.value.toLowerCase().split(' ');
 
   // Проверка количества хештегов
@@ -401,9 +399,7 @@ var validateHashTags = function () {
 
   // Проверка на пустой хештег
   if (hashTags.length === 1 && hashTags[0] === '') {
-    imgHashTag.setCustomValidity('Пустой массив');
-    imgHashTag.reportValidity();
-    return false;
+    imgHashTag.setCustomValidity('');
   } else {
     // Проверка на # в начале
     for (var i = 0; i < hashTags.length; i++) {
