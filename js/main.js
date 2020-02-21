@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-showBigPicture();
+//showBigPicture();
 
 // Загрузка изображений
 var imgOption = document.querySelector('.img-upload__overlay');
@@ -370,72 +370,82 @@ var imgText = imgOption.querySelector('.img-upload__text');
 var imgHashTag = imgText.querySelector('.text__hashtags');
 
 // Блокировка закрытия окна фото при фокусе
-imgText.addEventListener('click', function (evt) {
+  var textFocusHandler = function (evt) {
+    document.removeEventListener('keydown', btnCloseImgHandler);
 
-  if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') {
-    evt.target.addEventListener('focus', function () {
-      document.removeEventListener('keydown', btnCloseImgHandler);
-    });
-
-    evt.target.addEventListener('blur', function () {
+    var textBlurHandler = function () {
       document.addEventListener('keydown', btnCloseImgHandler);
-    });
+    }
+
+    evt.target.addEventListener('blur', textBlurHandler);
   }
-});
+
+imgText.addEventListener('mousedown', function (evt) {
+  if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') {
+    evt.target.addEventListener('focus', textFocusHandler);
+  }
+})
 
 // Валидация хештегов
 document.querySelector('#upload-select-image').addEventListener('submit', function (evt) {
-  validateHashTags(evt);
+  if (!validateHashTags()) {
+    evt.preventDefault();
+  };
+  console.log(document.querySelectorAll('*:focus'));
 });
 
-var validateHashTags = function (evt) {
-  evt.preventDefault();
+var validateHashTags = function () {
+  console.log('Я сделяль');
+
   var hashTags = imgHashTag.value.toLowerCase().split(' ');
+
   // Проверка количества хештегов
   if (hashTags.length > 5) {
-    // console.log('Нельзя указывать более 5 хештегов');
+    console.log('Нельзя указывать более 5 хештегов');
     imgHashTag.setCustomValidity('Нельзя указывать более 5 хештегов');
-    return;
+    imgHashTag.reportValidity();
+    return false;
   } else {
     imgHashTag.setCustomValidity('');
   }
+
   // Проверка на пустой хештег
   if (hashTags.length === 1 && hashTags[0] === '') {
-    // console.log('Пустой массив')
-    return;
+    console.log('Пустой массив')
+    return false;
   } else {
     // Проверка на # в начале
     for (var i = 0; i < hashTags.length; i++) {
-      // console.log('Хеш ' + i + ': ' + hashTags[i]);
+      console.log('Хеш ' + i + ': ' + hashTags[i]);
       if (hashTags[i].charAt(0) !== '#') {
-        // console.log('Хештег должен начинаться с решетки');
-        return;
+        console.log('Хештег должен начинаться с решетки');
+        return false;
       }
 
       // Проверка запрещенных символов
       for (var j = 1; j < hashTags[i].length; j++) {
 
         if (hashTags[i][j].match(/^\W$/gi) && hashTags[i][j].match(/[^А-ЯЁ]/gi)) {
-          // console.log('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
-          break;
+          console.log('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
+          return false;
         }
       }
       // Проверка длины хештега
       if (hashTags[i].length > 20) {
-        // console.log('Хештег не должен превышать 20 символов, включая #');
-        return;
+        console.log('Хештег не должен превышать 20 символов, включая #');
+        return false;
       }
       // Проверка на односимвольность
       if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#') {
-        // console.log('Хештег пустой');
-        return;
+        console.log('Хештег пустой');
+        return false;
       }
       // Проверка на дубли
       if (hashTags.indexOf(hashTags[i], i + 1) !== -1) {
-        // console.log('Дублируется хештег: ' + hashTags[i]);
-        return;
+        console.log('Дублируется хештег: ' + hashTags[i]);
+        return false;
       }
     }
   }
-  document.querySelector('#upload-select-image').submit();
+  return true;
 };
