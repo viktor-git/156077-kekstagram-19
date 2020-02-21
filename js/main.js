@@ -370,19 +370,19 @@ var imgText = imgOption.querySelector('.img-upload__text');
 var imgHashTag = imgText.querySelector('.text__hashtags');
 
 // Блокировка закрытия окна фото при фокусе
- document.addEventListener('focusin', function () {
+document.addEventListener('focusin', function () {
   if (document.hasFocus() && document.activeElement.classList.contains('text__hashtags')
   || document.activeElement.classList.contains('text__description')) {
-  document.removeEventListener('keydown', btnCloseImgHandler);
-}
-})
+    document.removeEventListener('keydown', btnCloseImgHandler);
+  }
+});
 
 document.addEventListener('focusout', function () {
   document.addEventListener('keydown', btnCloseImgHandler);
-})
+});
 
 // Валидация хештегов
-document.querySelector('#upload-submit').addEventListener('click', function() {
+document.querySelector('#upload-submit').addEventListener('click', function () {
   validateHashTags();
 });
 
@@ -391,7 +391,6 @@ var validateHashTags = function () {
 
   // Проверка количества хештегов
   if (hashTags.length > 5) {
-    console.log('Нельзя указывать более 5 хештегов');
     imgHashTag.setCustomValidity('Нельзя указывать более 5 хештегов');
     imgHashTag.reportValidity();
     return false;
