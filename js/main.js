@@ -170,6 +170,7 @@ var imgUploadHandler = function () {
 // Обработчик закрытия попапа с клавиши
 var btnCloseImgHandler = function (evt) {
   if (evt.key === 'Escape') {
+    alert('123');
     closeImg();
   }
 };
@@ -370,33 +371,24 @@ var imgText = imgOption.querySelector('.img-upload__text');
 var imgHashTag = imgText.querySelector('.text__hashtags');
 
 // Блокировка закрытия окна фото при фокусе
-  var textFocusHandler = function (evt) {
-    document.removeEventListener('keydown', btnCloseImgHandler);
+ document.addEventListener('focusin', function () {
+  if (document.hasFocus() && document.activeElement.classList.contains('text__hashtags')
+  || document.activeElement.classList.contains('text__description')) {
+  document.removeEventListener('keydown', btnCloseImgHandler);
+}
+})
 
-    var textBlurHandler = function () {
-      document.addEventListener('keydown', btnCloseImgHandler);
-    }
-
-    evt.target.addEventListener('blur', textBlurHandler);
-  }
-
-imgText.addEventListener('mousedown', function (evt) {
-  if (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA') {
-    evt.target.addEventListener('focus', textFocusHandler);
-  }
+document.addEventListener('focusout', function () {
+  document.addEventListener('keydown', btnCloseImgHandler);
 })
 
 // Валидация хештегов
-document.querySelector('#upload-select-image').addEventListener('submit', function (evt) {
-  if (!validateHashTags()) {
-    evt.preventDefault();
-  };
-  console.log(document.querySelectorAll('*:focus'));
+document.querySelector('#upload-submit').addEventListener('click', function() {
+  validateHashTags();
 });
 
 var validateHashTags = function () {
   console.log('Я сделяль');
-
   var hashTags = imgHashTag.value.toLowerCase().split(' ');
 
   // Проверка количества хештегов
@@ -405,20 +397,19 @@ var validateHashTags = function () {
     imgHashTag.setCustomValidity('Нельзя указывать более 5 хештегов');
     imgHashTag.reportValidity();
     return false;
-  } else {
-    imgHashTag.setCustomValidity('');
   }
 
   // Проверка на пустой хештег
   if (hashTags.length === 1 && hashTags[0] === '') {
-    console.log('Пустой массив')
+    imgHashTag.setCustomValidity('Пустой массив');
+    imgHashTag.reportValidity();
     return false;
   } else {
     // Проверка на # в начале
     for (var i = 0; i < hashTags.length; i++) {
-      console.log('Хеш ' + i + ': ' + hashTags[i]);
       if (hashTags[i].charAt(0) !== '#') {
-        console.log('Хештег должен начинаться с решетки');
+        imgHashTag.setCustomValidity('Хештег должен начинаться с решетки');
+        imgHashTag.reportValidity();
         return false;
       }
 
@@ -426,26 +417,31 @@ var validateHashTags = function () {
       for (var j = 1; j < hashTags[i].length; j++) {
 
         if (hashTags[i][j].match(/^\W$/gi) && hashTags[i][j].match(/[^А-ЯЁ]/gi)) {
-          console.log('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
+          imgHashTag.setCustomValidity('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
+          imgHashTag.reportValidity();
           return false;
         }
       }
       // Проверка длины хештега
       if (hashTags[i].length > 20) {
-        console.log('Хештег не должен превышать 20 символов, включая #');
+        imgHashTag.setCustomValidity('Хештег не должен превышать 20 символов, включая #');
+        imgHashTag.reportValidity();
         return false;
       }
       // Проверка на односимвольность
       if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#') {
-        console.log('Хештег пустой');
+        imgHashTag.setCustomValidity('Хештег пустой');
+        imgHashTag.reportValidity();
         return false;
       }
       // Проверка на дубли
       if (hashTags.indexOf(hashTags[i], i + 1) !== -1) {
-        console.log('Дублируется хештег: ' + hashTags[i]);
+        imgHashTag.setCustomValidity('Дублируется хештег: ' + hashTags[i]);
+        imgHashTag.reportValidity();
         return false;
       }
     }
   }
+  imgHashTag.setCustomValidity('');
   return true;
 };
