@@ -204,7 +204,7 @@ var btnCloseImgHandler = function (evt) {
   if (evt.key === 'Escape'
     && !document.activeElement.parentNode.classList.contains('img-upload__text')
     && !document.activeElement.classList.contains('social__footer-text')) {
-      closeImg();
+    closeImg();
   }
 };
 
