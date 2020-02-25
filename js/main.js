@@ -357,7 +357,7 @@ var validateHashTags = function () {
       if (hashTags[i].charAt(0) !== '#') {
         imgHashTag.setCustomValidity('Хештег должен начинаться с решетки');
         imgHashTag.reportValidity();
-        return;
+        return false;
       }
 
       // Проверка запрещенных символов
@@ -366,28 +366,29 @@ var validateHashTags = function () {
         if (hashTags[i][j].match(/^\W$/gi) && hashTags[i][j].match(/[^А-ЯЁ]/gi)) {
           imgHashTag.setCustomValidity('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
           imgHashTag.reportValidity();
-          return;
+          return false;
         }
       }
       // Проверка длины хештега
       if (hashTags[i].length > 20) {
         imgHashTag.setCustomValidity('Хештег не должен превышать 20 символов, включая #');
         imgHashTag.reportValidity();
-        return;
+        return false;
       }
       // Проверка на односимвольность
       if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#') {
         imgHashTag.setCustomValidity('Хештег пустой');
         imgHashTag.reportValidity();
-        return;
+        return false;
       }
       // Проверка на дубли
       if (hashTags.indexOf(hashTags[i], i + 1) !== -1) {
         imgHashTag.setCustomValidity('Дублируется хештег: ' + hashTags[i]);
         imgHashTag.reportValidity();
-        return;
+        return false;
       }
     }
   }
   imgHashTag.setCustomValidity('');
+  return true;
 };
