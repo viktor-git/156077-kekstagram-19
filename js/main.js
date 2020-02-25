@@ -92,14 +92,15 @@ document.querySelector('.pictures').append(addPictures());
 var bigPicture = document.querySelector('.big-picture');
 
 //  Показываем увеличенное фото
-var showBigPicture = function () {
+var showBigPicture = function (pictureId) {
   document.querySelector('body').classList.add('modal-open');
 
   bigPicture.classList.remove('hidden');
-  var randomPictureNum = getRandomNum(0, userPhotos.length);
 
-  fillBigPictureInfo(userPhotos[randomPictureNum]);
-  addPictureComments(userPhotos[randomPictureNum]);
+  fillBigPictureInfo(userPhotos[pictureId]);
+  addPictureComments(userPhotos[pictureId]);
+
+  document.removeEventListener('keydown', pictureOpenHandler);
 };
 
 //  Заполняем информацией увеличенное фото
@@ -151,12 +152,30 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-showBigPicture();
+// Открытие полноэкранного изображения
+document.addEventListener('click', function (evt) {
+  var target = evt.target;
+  if (target.parentNode.classList.contains('picture')) {
+    document.addEventListener('keydown', btnCloseImgHandler);
+    showBigPicture(target.parentNode.dataset.id);
+  }
+});
+
+var pictureOpenHandler = function (evt) {
+  var target = evt.target;
+  if (target.classList.contains('picture') && evt.key === 'Enter') {
+    document.addEventListener('keydown', btnCloseImgHandler);
+    showBigPicture(target.dataset.id);
+  }
+};
+
+document.addEventListener('keydown', pictureOpenHandler);
 
 // Загрузка изображений
 var imgOption = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
-var closeBtn = imgOption.querySelector('.img-upload__cancel');
+var newImgCloseBtn = imgOption.querySelector('.img-upload__cancel');
+var pictureCloseBtn = document.querySelector('#picture-cancel');
 
 // Обработчик загрузки изображения
 var imgUploadHandler = function () {
@@ -167,23 +186,32 @@ var imgUploadHandler = function () {
   setPhotoStartSettings();
 };
 
-// Обработчик закрытия попапа с клавиши
-var btnCloseImgHandler = function (evt) {
-  if (evt.key === 'Escape' && !document.activeElement.parentNode.classList.contains('img-upload__text')) {
-    closeImg();
-  }
-};
+// Загрузка нового изображения
+uploadBtn.addEventListener('change', imgUploadHandler);
 
-// Функция закрытия изображения
+
+// Закрытие изображений
 var closeImg = function () {
   imgOption.classList.add('hidden');
+  bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadBtn.value = '';
   document.removeEventListener('keydown', btnCloseImgHandler);
+  document.addEventListener('keydown', pictureOpenHandler);
 };
 
-uploadBtn.addEventListener('change', imgUploadHandler);
-closeBtn.addEventListener('click', function () {
+var btnCloseImgHandler = function (evt) {
+  if (evt.key === 'Escape'
+    && !document.activeElement.parentNode.classList.contains('img-upload__text')
+    && !document.activeElement.classList.contains('social__footer-text')) {
+      closeImg();
+  }
+};
+
+newImgCloseBtn.addEventListener('click', function () {
+  closeImg();
+});
+pictureCloseBtn.addEventListener('click', function () {
   closeImg();
 });
 
