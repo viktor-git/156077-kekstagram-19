@@ -151,7 +151,7 @@ var createPictureComment = function (pictureComment) {
   return bigPictureUserComment;
 };
 
-//showBigPicture();
+showBigPicture();
 
 // Загрузка изображений
 var imgOption = document.querySelector('.img-upload__overlay');
@@ -169,7 +169,7 @@ var imgUploadHandler = function () {
 
 // Обработчик закрытия попапа с клавиши
 var btnCloseImgHandler = function (evt) {
-  if (evt.key === 'Escape') {
+  if (evt.key === 'Escape' && !document.activeElement.parentNode.classList.contains('img-upload__text')) {
     closeImg();
   }
 };
@@ -220,69 +220,42 @@ var clearEffects = function () {
   imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
 };
 
+// Накладываем выбранный эффект на фото
+imgOption.addEventListener('click', function (evt) {
+  var target = evt.target;
+
+  if (target.parentNode.classList.contains('effects__item')) {
+    clearEffects();
+    imgPreview.classList.add('effects__preview--' + imgOption.querySelector('input[type="radio"]:checked').value);
+  }
+
+  if (imgOption.querySelector('input[type="radio"]:checked').value === 'none') {
+    imgEffectSlider.classList.add('visually-hidden');
+  }
+
+});
+
 // Функция установки глубины эффекта
-var setEffecsDepth = function (evt) {
+var setEffecsDepth = function () {
   switch (imgOption.querySelector('input[type="radio"]:checked').value) {
-    case 'none':
-      if (evt.type === 'click') {
-        clearEffects();
-        imgEffectSlider.classList.add('visually-hidden');
-      }
-      break;
-
     case 'chrome':
-      if (evt.type === 'click') {
-        clearEffects();
-        imgPreview.classList.add('effects__preview--chrome');
-      }
-
-      if (evt.type === 'mouseup') {
-        imgPreview.style.filter = 'grayscale(' + (effectDepth.value / 100) + ')';
-      }
+      imgPreview.style.filter = 'grayscale(' + (effectDepth.value / 100) + ')';
       break;
 
     case 'sepia':
-      if (evt.type === 'click') {
-        clearEffects();
-        imgPreview.classList.add('effects__preview--sepia');
-      }
-
-      if (evt.type === 'mouseup') {
-        imgPreview.style.filter = 'sepia(' + (effectDepth.value / 100) + ')';
-      }
+      imgPreview.style.filter = 'sepia(' + (effectDepth.value / 100) + ')';
       break;
 
     case 'marvin':
-      if (evt.type === 'click') {
-        clearEffects();
-        imgPreview.classList.add('effects__preview--marvin');
-      }
-
-      if (evt.type === 'mouseup') {
-        imgPreview.style.filter = 'invert(' + effectDepth.value + '%' + ')';
-      }
+      imgPreview.style.filter = 'invert(' + effectDepth.value + '%' + ')';
       break;
 
     case 'phobos':
-      if (evt.type === 'click') {
-        clearEffects();
-        imgPreview.classList.add('effects__preview--phobos');
-      }
-
-      if (evt.type === 'mouseup') {
-        imgPreview.style.filter = 'blur(' + (3 * effectDepth.value / 100) + 'px' + ')';
-      }
+      imgPreview.style.filter = 'blur(' + (3 * effectDepth.value / 100) + 'px' + ')';
       break;
 
     case 'heat':
-      if (evt.type === 'click') {
-        clearEffects();
-        imgPreview.classList.add('effects__preview--phobos');
-      }
-
-      if (evt.type === 'mouseup') {
-        imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
-      }
+      imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
       break;
   }
 };
@@ -317,7 +290,7 @@ effectPin.addEventListener('mousedown', function (evt) {
     evtUp.preventDefault();
     effectDepth.value = parseInt(effectPin.style.left, 10);
 
-    setEffecsDepth(evtUp);
+    setEffecsDepth();
 
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
@@ -325,15 +298,6 @@ effectPin.addEventListener('mousedown', function (evt) {
 
   document.addEventListener('mousemove', mouseMoveHandler);
   document.addEventListener('mouseup', mouseUpHandler);
-});
-
-// Накладываем выбранный эффект на фото
-imgOption.addEventListener('click', function (evt) {
-  var target = evt.target;
-
-  if (target.parentNode.classList.contains('effects__item')) {
-    setEffecsDepth(evt);
-  }
 });
 
 // Изменение размеров изображения
@@ -369,18 +333,6 @@ sizeDecreaseBtn.addEventListener('click', function () {
 var imgText = imgOption.querySelector('.img-upload__text');
 var imgHashTag = imgText.querySelector('.text__hashtags');
 
-// Блокировка закрытия окна фото при фокусе
-document.addEventListener('focusin', function () {
-  if (document.hasFocus() && document.activeElement.classList.contains('text__hashtags')
-  || document.activeElement.classList.contains('text__description')) {
-    document.removeEventListener('keydown', btnCloseImgHandler);
-  }
-});
-
-document.addEventListener('focusout', function () {
-  document.addEventListener('keydown', btnCloseImgHandler);
-});
-
 // Валидация хештегов
 document.querySelector('#upload-submit').addEventListener('click', function () {
   validateHashTags();
@@ -405,7 +357,7 @@ var validateHashTags = function () {
       if (hashTags[i].charAt(0) !== '#') {
         imgHashTag.setCustomValidity('Хештег должен начинаться с решетки');
         imgHashTag.reportValidity();
-        return false;
+        return;
       }
 
       // Проверка запрещенных символов
@@ -414,29 +366,28 @@ var validateHashTags = function () {
         if (hashTags[i][j].match(/^\W$/gi) && hashTags[i][j].match(/[^А-ЯЁ]/gi)) {
           imgHashTag.setCustomValidity('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
           imgHashTag.reportValidity();
-          return false;
+          return;
         }
       }
       // Проверка длины хештега
       if (hashTags[i].length > 20) {
         imgHashTag.setCustomValidity('Хештег не должен превышать 20 символов, включая #');
         imgHashTag.reportValidity();
-        return false;
+        return;
       }
       // Проверка на односимвольность
       if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#') {
         imgHashTag.setCustomValidity('Хештег пустой');
         imgHashTag.reportValidity();
-        return false;
+        return;
       }
       // Проверка на дубли
       if (hashTags.indexOf(hashTags[i], i + 1) !== -1) {
         imgHashTag.setCustomValidity('Дублируется хештег: ' + hashTags[i]);
         imgHashTag.reportValidity();
-        return false;
+        return;
       }
     }
   }
   imgHashTag.setCustomValidity('');
-  return true;
 };
