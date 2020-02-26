@@ -13,17 +13,17 @@
   };
 
   //  Создаем фрагмент с фотографиями на основе шаблона добавления в DOM
-  var addPictures = function () {
+  var addPictures = function (photoArray) {
     var fragment = new DocumentFragment();
 
-    for (var i = 0; i < window.data.userPhoto.length; i++) {
-      fragment.append(createPicture(window.data.userPhoto[i], i));
+    for (var i = 0; i < photoArray.length; i++) {
+      fragment.append(createPicture(photoArray[i], i));
     }
 
     return fragment;
   };
 
   //  Вставляем созданный фрагмент фотографий в DOM
-  document.querySelector('.pictures').append(addPictures());
+  document.querySelector('.pictures').append(addPictures(window.data.userPhotos));
 
 })();

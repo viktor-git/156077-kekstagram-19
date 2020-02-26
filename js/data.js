@@ -53,11 +53,11 @@
     return photos;
   };
 
-  var userPhoto = addPhotos(25);
+  var userPhotos = addPhotos(25);
 
   // Экспорт
   window.data = {
-    'userPhoto': userPhoto
+    'userPhotos': userPhotos
   };
 
 })();
