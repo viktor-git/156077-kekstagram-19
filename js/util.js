@@ -1,6 +1,6 @@
 'use strict';
 // Вспомогательный модуль
-;(function () {
+(function () {
   //  Добавляем функцию рандомизации элементов массива
   var getRandElement = function (arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -24,6 +24,6 @@
     'getRandElement': getRandElement,
     'getRandomNum': getRandomNum,
     'closeImg': closeImg
-  }
+  };
 
 })();

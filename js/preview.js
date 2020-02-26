@@ -1,6 +1,6 @@
 'use strict';
 // Модуль отрисовки превью фото
-;(function () {
+(function () {
   //  Создаем фото для добавления в DOM на основе шаблона
   var createPicture = function (picture, arrItem) {
     var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);

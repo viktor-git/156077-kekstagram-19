@@ -1,7 +1,7 @@
 'use strict';
 // Модуль загрузки и редактирования изображений
-;(function() {
-
+(function () {
+  console.log(window.data.userPhoto);
   var imgOption = document.querySelector('.img-upload__overlay');
   var newImgCloseBtn = imgOption.querySelector('.img-upload__cancel');
   var uploadBtn = document.querySelector('#upload-file');

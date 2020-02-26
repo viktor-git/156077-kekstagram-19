@@ -24,7 +24,7 @@
     'getRandElement': getRandElement,
     'getRandomNum': getRandomNum,
     'closeImg': closeImg
-  }
+  };
 
 })();
 
@@ -119,7 +119,7 @@
 })();
 
 // Модуль показа фото
-(function() {
+(function () {
 
   var bigPicture = document.querySelector('.big-picture');
 
@@ -218,7 +218,7 @@
 })();
 
 // Модуль загрузки и редактирования изображений
-(function() {
+(function () {
 
   var imgOption = document.querySelector('.img-upload__overlay');
   var newImgCloseBtn = imgOption.querySelector('.img-upload__cancel');

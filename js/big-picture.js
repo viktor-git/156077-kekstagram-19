@@ -1,6 +1,6 @@
 'use strict';
 // Модуль показа фото
-;(function() {
+(function () {
 
   var bigPicture = document.querySelector('.big-picture');
 
