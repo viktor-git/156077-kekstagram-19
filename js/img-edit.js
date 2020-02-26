@@ -169,67 +169,64 @@
     getDecreaseChangedValue(25, 25);
   });
 
-  // Валидация
-  var imgText = imgOption.querySelector('.img-upload__text');
-  var imgHashTag = imgText.querySelector('.text__hashtags');
-
   // Валидация хештегов
   document.querySelector('#upload-submit').addEventListener('click', function () {
-    validateHashTags();
+    var imgHashTag = document.querySelector('.text__hashtags');
+    var hashTags = imgHashTag.value.toLowerCase().split(' ');
+    validateHashTags(hashTags, imgHashTag);
   });
 
-  var validateHashTags = function () {
-    var hashTags = imgHashTag.value.toLowerCase().split(' ');
+  var validateHashTags = function (hashArray, validateField) {
 
     // Проверка количества хештегов
-    if (hashTags.length > 5) {
-      imgHashTag.setCustomValidity('Нельзя указывать более 5 хештегов');
-      imgHashTag.reportValidity();
+    if (hashArray.length > 5) {
+      validateField.setCustomValidity('Нельзя указывать более 5 хештегов');
+      validateField.reportValidity();
       return false;
     }
 
     // Проверка на пустой хештег
-    if (hashTags.length === 1 && hashTags[0] === '') {
-      imgHashTag.setCustomValidity('');
+    if (hashArray.length === 1 && hashArray[0] === '') {
+      validateField.setCustomValidity('');
     } else {
       // Проверка на # в начале
-      for (var i = 0; i < hashTags.length; i++) {
-        if (hashTags[i].charAt(0) !== '#') {
-          imgHashTag.setCustomValidity('Хештег должен начинаться с решетки');
-          imgHashTag.reportValidity();
+      for (var i = 0; i < hashArray.length; i++) {
+        if (hashArray[i].charAt(0) !== '#') {
+          validateField.setCustomValidity('Хештег должен начинаться с решетки');
+          validateField.reportValidity();
           return false;
         }
 
         // Проверка запрещенных символов
-        for (var j = 1; j < hashTags[i].length; j++) {
+        for (var j = 1; j < hashArray[i].length; j++) {
 
-          if (hashTags[i][j].match(/^\W$/gi) && hashTags[i][j].match(/[^А-ЯЁ]/gi)) {
-            imgHashTag.setCustomValidity('Используются запрещенный символ: ' + hashTags[i][j].match(/^\W$/gi));
-            imgHashTag.reportValidity();
+          if (hashArray[i][j].match(/^\W$/gi) && hashArray[i][j].match(/[^А-ЯЁ]/gi)) {
+            validateField.setCustomValidity('Используются запрещенный символ: ' + hashArray[i][j].match(/^\W$/gi));
+            validateField.reportValidity();
             return false;
           }
         }
         // Проверка длины хештега
-        if (hashTags[i].length > 20) {
-          imgHashTag.setCustomValidity('Хештег не должен превышать 20 символов, включая #');
-          imgHashTag.reportValidity();
+        if (hashArray[i].length > 20) {
+          validateField.setCustomValidity('Хештег не должен превышать 20 символов, включая #');
+          validateField.reportValidity();
           return false;
         }
         // Проверка на односимвольность
-        if (hashTags[i].length === 1 && hashTags[i].charAt(0) === '#') {
-          imgHashTag.setCustomValidity('Хештег пустой');
-          imgHashTag.reportValidity();
+        if (hashArray[i].length === 1 && hashArray[i].charAt(0) === '#') {
+          validateField.setCustomValidity('Хештег пустой');
+          validateField.reportValidity();
           return false;
         }
         // Проверка на дубли
-        if (hashTags.indexOf(hashTags[i], i + 1) !== -1) {
-          imgHashTag.setCustomValidity('Дублируется хештег: ' + hashTags[i]);
-          imgHashTag.reportValidity();
+        if (hashArray.indexOf(hashArray[i], i + 1) !== -1) {
+          validateField.setCustomValidity('Дублируется хештег: ' + hashArray[i]);
+          validateField.reportValidity();
           return false;
         }
       }
     }
-    imgHashTag.setCustomValidity('');
+    validateField.setCustomValidity('');
     return true;
   };
 
