@@ -9,16 +9,15 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-    xhr.open('GET', URL);
-
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response, dataId);
       } else {
-        showError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        showError('Статус ответа: ' + xhr.status);
       }
     });
 
+    xhr.open('GET', URL);
     xhr.send();
 
     var showError = function (errorMessage) {

@@ -20,7 +20,7 @@
     }
 
     document.querySelector('.pictures').append(fragment);
-  }
+  };
 
   window.load(addPictures);
 

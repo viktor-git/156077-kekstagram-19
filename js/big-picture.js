@@ -39,8 +39,8 @@
     bigPictureUserComments.innerHTML = '';
     bigPictureUserComments.append(pictureComments);
 
-    //document.querySelector('.social__comment-count').classList.add('hidden');
-    //document.querySelector('.comments-loader').classList.add('hidden');
+    document.querySelector('.social__comment-count').classList.add('hidden');
+    document.querySelector('.comments-loader').classList.add('hidden');
   };
 
   //  Создаем массив комментариев для добавления к фото
