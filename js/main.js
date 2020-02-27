@@ -357,7 +357,7 @@ sizeDecreaseBtn.addEventListener('click', function () {
   getDecreaseChangedValue(25, 25);
 });
 
-// Валидация
+// Валидация полей
 var imgText = imgOption.querySelector('.img-upload__text');
 var imgHashTag = imgText.querySelector('.text__hashtags');
 
