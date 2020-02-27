@@ -21,9 +21,9 @@
 
   // Получаем массив данных о фотографии
   window.util = {
-    'getRandElement': getRandElement,
-    'getRandomNum': getRandomNum,
-    'closeImg': closeImg
+    getRandElement: getRandElement,
+    getRandomNum: getRandomNum,
+    closeImg: closeImg
   };
 
 })();

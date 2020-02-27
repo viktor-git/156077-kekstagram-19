@@ -57,7 +57,7 @@
 
   // Экспорт
   window.data = {
-    'userPhotos': userPhotos
+    userPhotos: userPhotos
   };
 
 })();
