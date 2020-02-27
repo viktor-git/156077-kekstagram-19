@@ -13,7 +13,7 @@
   };
 
   //  Создаем фрагмент с фотографиями на основе шаблона добавления в DOM
-  var addPictures = function (photoArray) {
+  /*var addPictures = function (photoArray) {
     var fragment = new DocumentFragment();
 
     for (var i = 0; i < photoArray.length; i++) {
@@ -21,9 +21,17 @@
     }
 
     return fragment;
-  };
+  };*/
+  var addPhotos = function (photoArray) {
+    var fragment = new DocumentFragment();
 
-  //  Вставляем созданный фрагмент фотографий в DOM
-  document.querySelector('.pictures').append(addPictures(window.data.userPhotos));
+    for (var i = 0; i < photoArray.length; i++) {
+      fragment.append(createPicture(photoArray[i], i));
+    }
+
+    document.querySelector('.pictures').append(fragment);
+  }
+
+  window.load(addPhotos);
 
 })();
