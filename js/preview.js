@@ -12,7 +12,6 @@
     return pictureTemplateClone;
   };
 
-  //  Создаем фрагмент с фотографиями на основе шаблона добавления в DOM
   var addPictures = function (photoArray) {
     var fragment = new DocumentFragment();
 
@@ -20,10 +19,9 @@
       fragment.append(createPicture(photoArray[i], i));
     }
 
-    return fragment;
+    document.querySelector('.pictures').append(fragment);
   };
 
-  //  Вставляем созданный фрагмент фотографий в DOM
-  document.querySelector('.pictures').append(addPictures(window.data.userPhotos));
+  window.load(addPictures);
 
 })();

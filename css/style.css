@@ -1361,6 +1361,24 @@ main {
   opacity: 0.6;
 }
 
+.server-error {
+  position: fixed;
+  z-index: 3;
+  text-align: center;
+  left: calc(50% - (340px / 2));
+  top: 30%;
+  margin-bottom: 0px;
+  padding-top: 20px;
+  color: red;
+  background: #3e4b5b;
+}
+
+.server-error__descr {
+  text-align: center;
+  padding: 5px 10px;
+  color: white;
+  text-transform: none;
+}
 
 /**
  * Экран загрузки изображения

@@ -19,11 +19,26 @@
     document.querySelector('#upload-file').value = '';
   };
 
+  var showError = function (errorMessage, detailedMessage) {
+    var errorMess = document.createElement('div');
+    errorMess.textContent = errorMessage;
+    errorMess.classList.add('server-error');
+
+    var additionalMessage = document.createElement('p');
+    additionalMessage.classList.add('server-error__descr');
+    additionalMessage.textContent = detailedMessage;
+
+    errorMess.append(additionalMessage);
+    document.body.prepend(errorMess);
+
+  };
+
   // Получаем массив данных о фотографии
   window.util = {
     getRandElement: getRandElement,
     getRandomNum: getRandomNum,
-    closeImg: closeImg
+    closeImg: closeImg,
+    showError: showError
   };
 
 })();

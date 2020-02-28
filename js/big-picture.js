@@ -5,7 +5,7 @@
   var bigPicture = document.querySelector('.big-picture');
 
   //  Показываем увеличенное фото
-  var showBigPicture = function (pictureId, photoArray) {
+  var showBigPicture = function (photoArray, pictureId) {
     document.querySelector('body').classList.add('modal-open');
 
     bigPicture.classList.remove('hidden');
@@ -70,7 +70,7 @@
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       document.addEventListener('keydown', btnClosePictureHandler);
-      showBigPicture(target.parentNode.dataset.id, window.data.userPhotos);
+      window.load(showBigPicture, target.parentNode.dataset.id);
     }
   });
 
@@ -85,7 +85,7 @@
     var target = evt.target;
     if (target.classList.contains('picture') && evt.key === 'Enter') {
       document.addEventListener('keydown', btnClosePictureHandler);
-      showBigPicture(target.dataset.id, window.data.userPhotos);
+      window.load(showBigPicture, target.dataset.id);
     }
   };
 

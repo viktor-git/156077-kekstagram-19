@@ -36,29 +36,6 @@
   var effectLineDepth = imgEffectSlider.querySelector('.effect-level__depth');
   var effectDepth = imgEffectSlider.querySelector('.effect-level__value');
 
-  // Устанавливаем стартовые значения при загрузке фото
-  var setPhotoStartSettings = function () {
-    sizeControl.value = 100 + '%';
-    imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
-    imgEffectSlider.classList.add('visually-hidden');
-    effectDepth.value = 100;
-  };
-
-  // Очищаем эффекты при переключении
-  var clearEffects = function () {
-    imgPreview.setAttribute('class', '');
-    imgPreview.style.filter = '';
-
-    if (imgEffectSlider.classList.contains('visually-hidden')) {
-      imgEffectSlider.classList.remove('visually-hidden');
-    }
-
-    effectPin.style.left = '100%';
-    effectLineDepth.style.width = '100%';
-
-    sizeControl.value = 100 + '%';
-    imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
-  };
 
   // Накладываем выбранный эффект на фото
   imgOption.addEventListener('click', function (evt) {
@@ -230,4 +207,103 @@
     return true;
   };
 
+  // Отправка формы AJAX
+  var form = document.querySelector('.img-upload__form');
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    var successUploadHandler = function () {
+      window.util.closeImg();
+      clearEffects();
+      setPhotoStartSettings();
+      var successMessage = document.querySelector('#success').content.cloneNode(true);
+      document.querySelector('main').append(successMessage);
+
+      document.addEventListener('click', successMessageRemoveClickHandler);
+      document.addEventListener('keydown', successMessageRemoveKeyHandler);
+    };
+
+    var errorUploadHandler = function () {
+      window.util.closeImg();
+      clearEffects();
+      setPhotoStartSettings();
+      var errorMessage = document.querySelector('#error').content.cloneNode(true);
+      document.querySelector('main').append(errorMessage);
+
+      document.addEventListener('click', errorMessageRemoveClickHandler);
+      document.addEventListener('keydown', errorMessageRemoveKeyHandler);
+    };
+
+    var successMessageRemoveClickHandler = function () {
+      if (evt.target.classList.contains('success__button') ||
+        evt.target.classList.contains('success')) {
+        closeMessage('main .success');
+      }
+    };
+
+    var successMessageRemoveKeyHandler = function () {
+      if (evt.key === 'Escape') {
+        closeMessage('main .success');
+      }
+    };
+
+    var errorMessageRemoveClickHandler = function () {
+      if (evt.target.classList.contains('error__button') ||
+        evt.target.classList.contains('error')) {
+        closeMessage('main .error');
+      }
+    };
+
+    var errorMessageRemoveKeyHandler = function () {
+      if (evt.key === 'Escape') {
+        closeMessage('main .error');
+      }
+    };
+
+    var closeMessage = function (selector) {
+      document.querySelector(selector).remove();
+
+      document.removeEventListener('click', errorMessageRemoveClickHandler);
+      document.removeEventListener('keydown', errorMessageRemoveKeyHandler);
+      document.removeEventListener('click', successMessageRemoveClickHandler);
+      document.removeEventListener('keydown', successMessageRemoveKeyHandler);
+    };
+
+    window.upload(new FormData(form), successUploadHandler, errorUploadHandler);
+
+  });
+
+  // Устанавливаем стартовые значения при загрузке фото
+  var setPhotoStartSettings = function () {
+    sizeControl.value = 100 + '%';
+    imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
+    imgEffectSlider.classList.add('visually-hidden');
+    effectDepth.value = 100;
+    imgOption.querySelector('.effects__list:first-child input').checked = true;
+
+    var imgText = imgOption.querySelectorAll('.img-upload__text [class^="text__"]');
+    for (var i = 0; i < imgText.length; i++) {
+      imgText[i].value = '';
+    }
+  };
+
+  // Очищаем эффекты при переключении
+  var clearEffects = function () {
+    imgPreview.setAttribute('class', '');
+    imgPreview.style.filter = '';
+
+    if (imgEffectSlider.classList.contains('visually-hidden')) {
+      imgEffectSlider.classList.remove('visually-hidden');
+    }
+
+    effectPin.style.left = '100%';
+    effectLineDepth.style.width = '100%';
+
+    sizeControl.value = 100 + '%';
+    imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
+  };
+
 })();
+
+
