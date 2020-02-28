@@ -1361,6 +1361,19 @@ main {
   opacity: 0.6;
 }
 
+.server-error {
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 0px;
+  color: red;
+}
+
+.server-error__descr {
+  text-align: center;
+  padding: 5px 10px;
+  color: white;
+  text-transform: none;
+}
 
 /**
  * Экран загрузки изображения
