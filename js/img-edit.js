@@ -207,13 +207,13 @@
     return true;
   };
 
-// Отправка формы AJAX
+  // Отправка формы AJAX
   var form = document.querySelector('.img-upload__form');
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    var successUploadHandler = function (response) {
+    var successUploadHandler = function () {
       window.util.closeImg();
       clearEffects();
       setPhotoStartSettings();
@@ -224,7 +224,7 @@
       document.addEventListener('keydown', successMessageRemoveKeyHandler);
     };
 
-    var errorUploadHandler = function (response) {
+    var errorUploadHandler = function () {
       window.util.closeImg();
       clearEffects();
       setPhotoStartSettings();
@@ -235,27 +235,27 @@
       document.addEventListener('keydown', errorMessageRemoveKeyHandler);
     };
 
-    var successMessageRemoveClickHandler = function (evt) {
+    var successMessageRemoveClickHandler = function () {
       if (evt.target.classList.contains('success__button') ||
         evt.target.classList.contains('success')) {
-          closeMessage('main .success');
+        closeMessage('main .success');
       }
     };
 
-    var successMessageRemoveKeyHandler = function (evt) {
+    var successMessageRemoveKeyHandler = function () {
       if (evt.key === 'Escape') {
         closeMessage('main .success');
       }
     };
 
-    var errorMessageRemoveClickHandler = function (evt) {
+    var errorMessageRemoveClickHandler = function () {
       if (evt.target.classList.contains('error__button') ||
         evt.target.classList.contains('error')) {
         closeMessage('main .error');
       }
     };
 
-    var errorMessageRemoveKeyHandler = function (evt) {
+    var errorMessageRemoveKeyHandler = function () {
       if (evt.key === 'Escape') {
         closeMessage('main .error');
       }
@@ -274,7 +274,7 @@
 
   });
 
-// Устанавливаем стартовые значения при загрузке фото
+  // Устанавливаем стартовые значения при загрузке фото
   var setPhotoStartSettings = function () {
     sizeControl.value = 100 + '%';
     imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
@@ -283,7 +283,7 @@
     imgOption.querySelector('.effects__list:first-child input').checked = true;
 
     var imgText = imgOption.querySelectorAll('.img-upload__text [class^="text__"]');
-    for (var i = 0; i < imgText.length; i ++) {
+    for (var i = 0; i < imgText.length; i++) {
       imgText[i].value = '';
     }
   };

@@ -1,5 +1,4 @@
 'use strict';
-
 (function () {
 
   var URL = 'https://js.dump.academy/kekstagram/data';
@@ -30,4 +29,4 @@
     xhr.send();
   };
 
-  })();
+})();
