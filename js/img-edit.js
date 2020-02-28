@@ -242,15 +242,15 @@
       }
     };
 
-    var successMessageRemoveKeyHandler = function (evtClick) {
-      if (evt.key === 'Escape') {
+    var successMessageRemoveKeyHandler = function (evtKey) {
+      if (evtKey.key === 'Escape') {
         closeMessage('main .success');
       }
     };
 
-    var errorMessageRemoveClickHandler = function (evtKey) {
-      if (evtKey.target.classList.contains('error__button') ||
-        evtKey.target.classList.contains('error')) {
+    var errorMessageRemoveClickHandler = function (evtClick) {
+      if (evtClick.target.classList.contains('error__button') ||
+        evtClick.target.classList.contains('error')) {
         closeMessage('main .error');
       }
     };
