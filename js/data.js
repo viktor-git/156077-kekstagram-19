@@ -20,7 +20,7 @@
     var showError = function (errorMessage, addMessage) {
       var errorMess = document.createElement('div');
       errorMess.textContent = errorMessage;
-      errorMess.classList.add('server-error')
+      errorMess.classList.add('server-error');
 
       var additionalMessage = document.createElement('p');
       additionalMessage.classList.add('server-error__descr');
@@ -43,7 +43,5 @@
     xhr.open('GET', URL);
     xhr.send();
   };
-
-
 
 })();
