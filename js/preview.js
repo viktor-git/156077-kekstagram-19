@@ -22,6 +22,6 @@
     document.querySelector('.pictures').append(fragment);
   };
 
-  window.load(addPictures);
+  window.load('GET', 'https://js.dump.academy/kekstagram/data', addPictures);
 
 })();

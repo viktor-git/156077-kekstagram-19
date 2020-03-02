@@ -270,7 +270,7 @@
       document.removeEventListener('keydown', successMessageRemoveKeyHandler);
     };
 
-    window.upload(new FormData(form), successUploadHandler, errorUploadHandler);
+    window.load('POST', 'https://js.dump.academy/kekstagram', successUploadHandler, errorUploadHandler, new FormData(form));
 
   });
 
