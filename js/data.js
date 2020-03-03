@@ -11,22 +11,26 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else if (type === 'GET') {
-        (type === 'GET') ?
-          onError('Статус ответа: ' + xhr.status, 'Проверьте корректность запрашиваемого URL') :
-          onError();
-      }
+            onError('Статус ответа: ' + xhr.status, 'Проверьте корректность запрашиваемого URL');
+          } else {
+              onError();
+          }
     });
 
     xhr.addEventListener('error', function () {
-      (type === 'GET') ?
-        onError('Произошла ошибка соединения', 'Вы оффлайн. Проверьте подключение к интернету') :
-        onError(xhr.status);
+      if (type === 'GET') {
+        onError('Произошла ошибка соединения', 'Вы оффлайн. Проверьте подключение к интернету');
+      } else {
+          onError(xhr.status);
+        }
     });
 
     xhr.addEventListener('timeout', function () {
-      (type === 'GET') ?
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', 'Проверьте скорость подключения') :
-        onError(TIMEOUT_IN_MS);
+      if (type === 'GET') {
+        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', 'Проверьте скорость подключения');
+      } else {
+          onError(TIMEOUT_IN_MS);
+      }
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
