@@ -23,8 +23,8 @@
 
     window.preview = {
       data: photoArray
-    }
-  }
+    };
+  };
 
   window.data.load(addPictures, window.util.showError);
 

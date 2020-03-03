@@ -70,7 +70,7 @@
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       document.addEventListener('keydown', btnClosePictureHandler);
-      showBigPicture(window.preview.data, target.parentNode.dataset.id);
+      showBigPicture(window.loadXHR.response, target.parentNode.dataset.id);
     }
   });
 
@@ -85,7 +85,7 @@
     var target = evt.target;
     if (target.classList.contains('picture') && evt.key === 'Enter') {
       document.addEventListener('keydown', btnClosePictureHandler);
-      showBigPicture(window.preview.data, target.dataset.id);
+      showBigPicture(window.loadXHR.response, target.dataset.id);
     }
   };
 

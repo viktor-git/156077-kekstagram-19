@@ -10,7 +10,7 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
-      } else {
+      } else if (type === 'GET') {
         (type === 'GET') ?
           onError('Статус ответа: ' + xhr.status, 'Проверьте корректность запрашиваемого URL') :
           onError();
@@ -30,16 +30,18 @@
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
-  }
+  };
 
   window.data = {
     load: function (onSuccess, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
+      window.loadXHR = xhr;
+
       makeRequest(onSuccess, onError, xhr, 'GET');
 
-      xhr.open("GET", LOAD_URL);
+      xhr.open('GET', LOAD_URL);
       xhr.send();
     },
 
