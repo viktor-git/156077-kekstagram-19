@@ -70,7 +70,7 @@
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       document.addEventListener('keydown', btnClosePictureHandler);
-      window.load('GET', 'https://js.dump.academy/kekstagram/data', showBigPicture, 'none', 'none', target.parentNode.dataset.id);
+      showBigPicture(window.preview.data, target.parentNode.dataset.id);
     }
   });
 
@@ -85,7 +85,7 @@
     var target = evt.target;
     if (target.classList.contains('picture') && evt.key === 'Enter') {
       document.addEventListener('keydown', btnClosePictureHandler);
-      window.load('GET', 'https://js.dump.academy/kekstagram/data', showBigPicture, 'none', 'none', target.dataset.id);
+      showBigPicture(window.preview.data, target.dataset.id);
     }
   };
 

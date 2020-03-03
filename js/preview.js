@@ -20,8 +20,12 @@
     }
 
     document.querySelector('.pictures').append(fragment);
-  };
 
-  window.load('GET', 'https://js.dump.academy/kekstagram/data', addPictures, window.util.showError);
+    window.preview = {
+      data: photoArray
+    }
+  }
+
+  window.data.load(addPictures, window.util.showError);
 
 })();
