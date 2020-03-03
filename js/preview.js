@@ -21,9 +21,7 @@
 
     document.querySelector('.pictures').append(fragment);
 
-    window.preview = {
-      data: photoArray
-    };
+    window.data.photos = photoArray;
   };
 
   window.data.load(addPictures, window.util.showError);
