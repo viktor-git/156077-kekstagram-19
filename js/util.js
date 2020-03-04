@@ -31,6 +31,7 @@
     errorMess.append(additionalMessage);
     document.body.prepend(errorMess);
 
+    document.querySelector('#upload-file').disabled = true;
   };
 
   // Получаем массив данных о фотографии

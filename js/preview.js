@@ -20,8 +20,10 @@
     }
 
     document.querySelector('.pictures').append(fragment);
+
+    window.data.photos = photoArray;
   };
 
-  window.load(addPictures);
+  window.data.load(addPictures, window.util.showError);
 
 })();

@@ -235,28 +235,28 @@
       document.addEventListener('keydown', errorMessageRemoveKeyHandler);
     };
 
-    var successMessageRemoveClickHandler = function () {
-      if (evt.target.classList.contains('success__button') ||
-        evt.target.classList.contains('success')) {
+    var successMessageRemoveClickHandler = function (evtClick) {
+      if (evtClick.target.classList.contains('success__button') ||
+        evtClick.target.classList.contains('success')) {
         closeMessage('main .success');
       }
     };
 
-    var successMessageRemoveKeyHandler = function () {
-      if (evt.key === 'Escape') {
+    var successMessageRemoveKeyHandler = function (evtKey) {
+      if (evtKey.key === 'Escape') {
         closeMessage('main .success');
       }
     };
 
-    var errorMessageRemoveClickHandler = function () {
-      if (evt.target.classList.contains('error__button') ||
-        evt.target.classList.contains('error')) {
+    var errorMessageRemoveClickHandler = function (evtClick) {
+      if (evtClick.target.classList.contains('error__button') ||
+        evtClick.target.classList.contains('error')) {
         closeMessage('main .error');
       }
     };
 
-    var errorMessageRemoveKeyHandler = function () {
-      if (evt.key === 'Escape') {
+    var errorMessageRemoveKeyHandler = function (evtKey) {
+      if (evtKey.key === 'Escape') {
         closeMessage('main .error');
       }
     };
@@ -270,7 +270,7 @@
       document.removeEventListener('keydown', successMessageRemoveKeyHandler);
     };
 
-    window.upload(new FormData(form), successUploadHandler, errorUploadHandler);
+    window.data.upload(new FormData(form), successUploadHandler, errorUploadHandler);
 
   });
 

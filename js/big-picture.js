@@ -5,13 +5,13 @@
   var bigPicture = document.querySelector('.big-picture');
 
   //  Показываем увеличенное фото
-  var showBigPicture = function (photoArray, pictureId) {
+  var showBigPicture = function (pictureId) {
     document.querySelector('body').classList.add('modal-open');
 
     bigPicture.classList.remove('hidden');
 
-    fillBigPictureInfo(photoArray[pictureId]);
-    addPictureComments(photoArray[pictureId]);
+    fillBigPictureInfo(window.data.photos[pictureId]);
+    addPictureComments(window.data.photos[pictureId]);
 
     document.removeEventListener('keydown', pictureOpenHandler);
   };
@@ -70,7 +70,7 @@
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
       document.addEventListener('keydown', btnClosePictureHandler);
-      window.load(showBigPicture, target.parentNode.dataset.id);
+      showBigPicture(target.parentNode.dataset.id);
     }
   });
 
@@ -85,7 +85,7 @@
     var target = evt.target;
     if (target.classList.contains('picture') && evt.key === 'Enter') {
       document.addEventListener('keydown', btnClosePictureHandler);
-      window.load(showBigPicture, target.dataset.id);
+      showBigPicture(target.dataset.id);
     }
   };
 
