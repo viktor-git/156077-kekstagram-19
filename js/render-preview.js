@@ -24,7 +24,7 @@
 
     window.data.photos = photoArray;
 
-    };
+  };
 
   window.data.load(addPictures, window.util.showError);
 

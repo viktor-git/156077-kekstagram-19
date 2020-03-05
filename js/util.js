@@ -12,10 +12,10 @@
   };
 
   var removePhoto = function (photoNodeList) {
-      Array.from(photoNodeList).forEach(function (item) {
-        item.remove();
-      })
-    }
+    Array.from(photoNodeList).forEach(function (item) {
+      item.remove();
+    });
+  };
 
   // Закрытие изображений
   var closeImg = function () {
