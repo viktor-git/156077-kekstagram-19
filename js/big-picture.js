@@ -6,7 +6,6 @@
   var bigPictureId;
   var commentsUploadBtn = document.querySelector('.social__comments-loader');
   var COMMENTS_COUNTER = 5;
-  var commentsModifier = 5;
 
   //  Показываем увеличенное фото
   var showBigPicture = function (pictureId) {
@@ -36,14 +35,14 @@
     bigPictureCommentsCount.textContent = pictureNumber.comments.length;
   };
 
-  //Подгрузка комментариев
+  // Подгрузка комментариев
   commentsUploadBtn.addEventListener('click', function () {
-    addPictureComments(window.data.photos[bigPictureId], 5)
+    addPictureComments(window.data.photos[bigPictureId], 5);
   });
 
   //  Добавляем комментарии к увеличенному фото
-  var addPictureComments = function (pictureNumber, commentsModifier) {
-    var pictureComments = createPictureComments(pictureNumber, commentsModifier);
+  var addPictureComments = function (pictureNumber, commentsValueModifier) {
+    var pictureComments = createPictureComments(pictureNumber, commentsValueModifier);
 
     var bigPictureUserComments = bigPicture.querySelector('.social__comments');
     bigPictureUserComments.innerHTML = '';
@@ -52,14 +51,13 @@
   };
 
   //  Создаем массив комментариев для добавления к фото
-  var createPictureComments = function (pictureNumber) {
-    console.log(arguments);
+  var createPictureComments = function (pictureNumber, commentsValueModifier) {
     var commentsCurrentValue = document.querySelector('.comments-current');
     commentsCurrentValue.textContent = COMMENTS_COUNTER;
 
     var commentsFragment = new DocumentFragment();
 
-    (arguments[1] !== undefined) ? COMMENTS_COUNTER += arguments[1] : COMMENTS_COUNTER = 5;
+    commentsValueModifier !== undefined ? COMMENTS_COUNTER += arguments[1] : COMMENTS_COUNTER = 5;
 
     var loadCommentsValue = Math.min(pictureNumber.comments.length, COMMENTS_COUNTER);
     commentsCurrentValue.textContent = loadCommentsValue;
@@ -116,7 +114,5 @@
     window.util.closeImg();
     document.addEventListener('keydown', pictureOpenHandler);
   });
-
-
 
 })();
