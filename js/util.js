@@ -11,6 +11,12 @@
     return Math.floor(Math.random() * (max - min) + min);
   };
 
+  var removePhoto = function (photoNodeList) {
+      Array.from(photoNodeList).forEach(function (item) {
+        item.remove();
+      })
+    }
+
   // Закрытие изображений
   var closeImg = function () {
     document.querySelector('.img-upload__overlay').classList.add('hidden');
@@ -39,7 +45,8 @@
     getRandElement: getRandElement,
     getRandomNum: getRandomNum,
     closeImg: closeImg,
-    showError: showError
+    showError: showError,
+    removePhoto: removePhoto
   };
 
 })();

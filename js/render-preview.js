@@ -1,6 +1,7 @@
 'use strict';
 // Модуль отрисовки превью фото
 (function () {
+
   //  Создаем фото для добавления в DOM на основе шаблона
   var createPicture = function (picture, arrItem) {
     var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);
@@ -22,8 +23,13 @@
     document.querySelector('.pictures').append(fragment);
 
     window.data.photos = photoArray;
-  };
+
+    };
 
   window.data.load(addPictures, window.util.showError);
+
+  window.renderPreview = {
+    addPictures: addPictures
+  };
 
 })();
