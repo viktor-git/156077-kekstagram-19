@@ -3,9 +3,14 @@
 (function () {
 
   var bigPicture = document.querySelector('.big-picture');
+  var bigPictureId;
+  var commentsUploadBtn = document.querySelector('.social__comments-loader');
+  var COMMENTS_COUNTER = 5;
+  var commentsModifier = 5;
 
   //  Показываем увеличенное фото
   var showBigPicture = function (pictureId) {
+    bigPictureId = pictureId;
     document.querySelector('body').classList.add('modal-open');
 
     bigPicture.classList.remove('hidden');
@@ -31,23 +36,39 @@
     bigPictureCommentsCount.textContent = pictureNumber.comments.length;
   };
 
+  //Подгрузка комментариев
+  commentsUploadBtn.addEventListener('click', function () {
+    addPictureComments(window.data.photos[bigPictureId], 5)
+  });
+
   //  Добавляем комментарии к увеличенному фото
-  var addPictureComments = function (pictureNumber) {
-    var pictureComments = createPictureComments(pictureNumber);
+  var addPictureComments = function (pictureNumber, commentsModifier) {
+    var pictureComments = createPictureComments(pictureNumber, commentsModifier);
 
     var bigPictureUserComments = bigPicture.querySelector('.social__comments');
     bigPictureUserComments.innerHTML = '';
     bigPictureUserComments.append(pictureComments);
 
-    document.querySelector('.social__comment-count').classList.add('hidden');
-    document.querySelector('.comments-loader').classList.add('hidden');
   };
 
   //  Создаем массив комментариев для добавления к фото
   var createPictureComments = function (pictureNumber) {
+    console.log(arguments);
+    var commentsCurrentValue = document.querySelector('.comments-current');
+    commentsCurrentValue.textContent = COMMENTS_COUNTER;
+
     var commentsFragment = new DocumentFragment();
 
-    for (var i = 0; i < pictureNumber.comments.length; i++) {
+    (arguments[1] !== undefined) ? COMMENTS_COUNTER += arguments[1] : COMMENTS_COUNTER = 5;
+
+    var loadCommentsValue = Math.min(pictureNumber.comments.length, COMMENTS_COUNTER);
+    commentsCurrentValue.textContent = loadCommentsValue;
+
+    if (loadCommentsValue === pictureNumber.comments.length) {
+      commentsUploadBtn.classList.add('hidden');
+    }
+
+    for (var i = 0; i < loadCommentsValue; i++) {
       commentsFragment.append(createPictureComment(pictureNumber.comments[i]));
     }
 
@@ -95,5 +116,7 @@
     window.util.closeImg();
     document.addEventListener('keydown', pictureOpenHandler);
   });
+
+
 
 })();

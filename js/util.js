@@ -23,6 +23,7 @@
     document.querySelector('.big-picture').classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.querySelector('#upload-file').value = '';
+    document.querySelector('.social__comments-loader').classList.remove('hidden');
   };
 
   var showError = function (errorMessage, detailedMessage) {

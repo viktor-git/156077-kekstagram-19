@@ -21,7 +21,7 @@
 
     this.createDefaultPictures = function () {
       if (DEFAULT_PICTURES === undefined) {
-        DEFAULT_PICTURES = window.data.photos;
+        DEFAULT_PICTURES = window.data.photos.slice();
       }
     };
 
