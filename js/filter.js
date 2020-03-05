@@ -1,14 +1,14 @@
 'use strict';
 (function () {
 
+  var RANDOM_PICTURE_VALUE = 10;
+  var DEFAULT_PICTURES;
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     })
   };
-
-  var RANDOM_PICTURE_VALUE = 10;
-  var DEFAULT_PICTURES;
 
   var createDefaultPictures = function () {
     if (DEFAULT_PICTURES === undefined) {
@@ -64,7 +64,7 @@
     newActiveElement.classList.add('img-filters__button--active');
   };
 
-  document.querySelector('.img-filters__form').addEventListener('click', function (evt) {
+  var filterBtnClickHandler = window.debounce(function (evt) {
     var target = evt.target;
 
     if (target.id === 'filter-random') {
@@ -83,4 +83,7 @@
     }
   });
 
+  document.querySelector('.img-filters__form').addEventListener('click', filterBtnClickHandler);
+
 })();
+
