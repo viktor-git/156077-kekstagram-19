@@ -1,17 +1,43 @@
 'use strict';
-// Вспомогательный модуль
+
 (function () {
-  //  Добавляем функцию рандомизации элементов массива
+  //  Рандомизация
   var getRandElement = function (arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   };
 
-  //  Добавляем функцию рандомизации чисел от мин до макс
+
   var getRandomNum = function (min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   };
 
-  var removePhoto = function (photoNodeList) {
+  var randomArr = function (arr, randArrLength) {
+    var randomArr = [];
+    var copyArr = arr.slice();
+
+    var count = randArrLength;
+
+    for (var i = 0; i < count; i++) {
+      var randomIndex = window.util.getRandomNum(0, copyArr.length - 1);
+
+      randomArr.push(copyArr[randomIndex]);
+      copyArr.splice(randomIndex, 1);
+    }
+
+    return randomArr;
+  };
+
+  // Сортировка массивов
+  var sortArrDecrease = function (a, b) {
+    return b.comments.length - a.comments.length;
+  };
+
+  var sortArrIncrease = function (a, b) {
+    return a.comments.length - b.comments.length;
+  };
+
+  // Удаление Node коллекции
+  var removeElements = function (photoNodeList) {
     Array.from(photoNodeList).forEach(function (item) {
       item.remove();
     });
@@ -26,6 +52,7 @@
     document.querySelector('.social__comments-loader').classList.remove('hidden');
   };
 
+  //Показ ошибки при загрузке массива с сервера
   var showError = function (errorMessage, detailedMessage) {
     var errorMess = document.createElement('div');
     errorMess.textContent = errorMessage;
@@ -41,13 +68,16 @@
     document.querySelector('#upload-file').disabled = true;
   };
 
-  // Получаем массив данных о фотографии
+  // Экспорт
   window.util = {
     getRandElement: getRandElement,
     getRandomNum: getRandomNum,
     closeImg: closeImg,
     showError: showError,
-    removePhoto: removePhoto
+    removeElements: removeElements,
+    randomArr: randomArr,
+    sortArrDecrease: sortArrDecrease,
+    sortArrIcrease: sortArrIncrease
   };
 
 })();

@@ -1,5 +1,5 @@
 'use strict';
-// УСтраненнеи дребезга
+
 (function () {
 
   var DEBOUNCE_INTERVAL = 500;

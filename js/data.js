@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
 
   var TIMEOUT_IN_MS = 10000;

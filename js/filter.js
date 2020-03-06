@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
 
   var RANDOM_PICTURE_VALUE = 10;
@@ -10,79 +11,64 @@
     });
   }
 
-  var SetPictureFilter = function () {
-
-    this.setActiveFilterBtn = function (newActiveElement) {
-      var filterBtnActive = document.querySelector('.img-filters__button--active');
-      filterBtnActive.classList.remove('img-filters__button--active');
-
-      newActiveElement.classList.add('img-filters__button--active');
-    };
-
-    this.createDefaultPictures = function () {
-      if (DEFAULT_PICTURES === undefined) {
-        DEFAULT_PICTURES = window.data.photos.slice();
-      }
-    };
-
-    this.setDefault = function () {
-      pictureFilter.createDefaultPictures();
-
-      window.util.removePhoto(document.querySelectorAll('.pictures .picture'));
-      window.renderPreview.addPictures(DEFAULT_PICTURES);
-    };
-
-    this.setRandom = function () {
-      pictureFilter.createDefaultPictures();
-
-      var filterPhotos = [];
-      var uniqueFilteredPhoto = [];
-
-      while (uniqueFilteredPhoto.length !== RANDOM_PICTURE_VALUE) {
-        var randomElement = window.util.getRandElement(window.data.photos);
-        filterPhotos.push(randomElement);
-
-        uniqueFilteredPhoto = filterPhotos.filter(function (item, i) {
-          return filterPhotos.indexOf(item) === i;
-        });
-      }
-
-      window.util.removePhoto(document.querySelectorAll('.pictures .picture'));
-      window.renderPreview.addPictures(uniqueFilteredPhoto);
-    };
-
-    this.setDiscuss = function () {
-      pictureFilter.createDefaultPictures();
-
-      var sortedPhoto = window.data.photos.sort(function (a, b) {
-        return b.comments.length - a.comments.length;
-      });
-
-      window.util.removePhoto(document.querySelectorAll('.pictures .picture'));
-      window.renderPreview.addPictures(sortedPhoto);
-    };
+  var createDefaultPictures = function () {
+    if (DEFAULT_PICTURES === undefined) {
+      DEFAULT_PICTURES = window.data.photos.slice();
+    }
   };
 
-  var pictureFilter = new SetPictureFilter();
+  var replaceFilteredPhoto = function (filteredArr) {
+    window.util.removeElements(document.querySelectorAll('.pictures .picture'));
+    window.renderPreview.addPictures(filteredArr);
+  }
+
+  var pictureFilter = {
+
+    default:  function () {
+      replaceFilteredPhoto(DEFAULT_PICTURES);
+    },
+
+    random: function () {
+      var uniqueFilteredPhoto = window.util.randomArr(window.data.photos, 10);
+      replaceFilteredPhoto(uniqueFilteredPhoto);
+    },
+
+    discuss: function () {
+      var sortedPhoto = window.data.photos.sort(window.util.sortArrDecrease);
+      replaceFilteredPhoto(sortedPhoto);
+    }
+  };
+
+  var setActiveFilterBtn = function (newActiveElement) {
+    var filterBtnActive = document.querySelector('.img-filters__button--active');
+    filterBtnActive.classList.remove('img-filters__button--active');
+
+    newActiveElement.classList.add('img-filters__button--active');
+  };
 
   // Фильтруем фото
   var filterBtnClickHandler = window.debounce(function (evt) {
     var target = evt.target;
+    createDefaultPictures();
 
-    if (target.id === 'filter-random') {
-      pictureFilter.setRandom();
-      pictureFilter.setActiveFilterBtn(target);
+    switch (target.id) {
+      case 'filter-random':
+        pictureFilter.random();
+        break;
+
+      case 'filter-discussed':
+        pictureFilter.discuss();
+        break;
+
+      case 'filter-default':
+        pictureFilter.default();
+        break;
+
+      default:
+        throw new Error ('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + target.id);
     }
 
-    if (target.id === 'filter-discussed') {
-      pictureFilter.setDiscuss();
-      pictureFilter.setActiveFilterBtn(target);
-    }
-
-    if (target.id === 'filter-default') {
-      pictureFilter.setDefault();
-      pictureFilter.setActiveFilterBtn(target);
-    }
+    setActiveFilterBtn(target);
   });
 
   document.querySelector('.img-filters__form').addEventListener('click', filterBtnClickHandler);
