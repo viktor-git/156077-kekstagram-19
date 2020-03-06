@@ -154,7 +154,12 @@
   document.querySelector('#upload-submit').addEventListener('click', function () {
     var imgHashTag = document.querySelector('.text__hashtags');
     var hashTags = imgHashTag.value.toLowerCase().split(' ');
-    validateHashTags(hashTags, imgHashTag);
+
+    if (!validateHashTags(hashTags, imgHashTag)) {
+      imgHashTag.style.border = '2px solid red';
+    } else {
+      imgHashTag.style.border = 'none';
+    }
   });
 
   var validateHashTags = function (hashArray, validateField) {

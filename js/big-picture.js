@@ -34,11 +34,7 @@
     var bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count .comments-count');
     bigPictureCommentsCount.textContent = pictureNumber.comments.length;
 
-    if (!document.querySelector('[data-id="' + bigPictureId + '"]').classList.contains('liked')) {
-      userLike.classList.remove('likes-count--active');
-    } else {
-      userLike.classList.add('likes-count--active');
-    }
+    checkLikePut();
   };
 
   //  Добавляем комментарии к увеличенному фото
@@ -128,6 +124,14 @@
 
   // Лайки
   var userLike = document.querySelector('.likes-count');
+
+  var checkLikePut = function () {
+    if (!document.querySelector('[data-id="' + bigPictureId + '"]').classList.contains('liked')) {
+      userLike.classList.remove('likes-count--active');
+    } else {
+      userLike.classList.add('likes-count--active');
+    }
+  };
 
   var setNewLikesValue = function (openedBigPicture) {
     openedBigPicture.querySelector('.picture__likes').textContent = userLike.textContent;
