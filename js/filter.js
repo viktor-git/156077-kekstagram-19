@@ -2,7 +2,6 @@
 
 (function () {
 
-  var RANDOM_PICTURE_VALUE = 10;
   var DEFAULT_PICTURES;
 
   if (document.readyState === 'loading') {
@@ -20,11 +19,11 @@
   var replaceFilteredPhoto = function (filteredArr) {
     window.util.removeElements(document.querySelectorAll('.pictures .picture'));
     window.renderPreview.addPictures(filteredArr);
-  }
+  };
 
   var pictureFilter = {
 
-    default:  function () {
+    default: function () {
       replaceFilteredPhoto(DEFAULT_PICTURES);
     },
 
@@ -65,7 +64,7 @@
         break;
 
       default:
-        throw new Error ('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + target.id);
+        throw new Error('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + target.id);
     }
 
     setActiveFilterBtn(target);

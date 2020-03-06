@@ -34,7 +34,7 @@
     var bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count .comments-count');
     bigPictureCommentsCount.textContent = pictureNumber.comments.length;
 
-    if (!document.querySelector('[data-id="' + bigPictureId +'"]').classList.contains('liked')) {
+    if (!document.querySelector('[data-id="' + bigPictureId + '"]').classList.contains('liked')) {
       userLike.classList.remove('likes-count--active');
     } else {
       userLike.classList.add('likes-count--active');
@@ -129,8 +129,8 @@
   // Лайки
   var userLike = document.querySelector('.likes-count');
 
-  var setNewLikesValue = function () {
-    document.querySelector('[data-id="' + bigPictureId +'"] .picture__likes').textContent = userLike.textContent;
+  var setNewLikesValue = function (openedBigPicture) {
+    openedBigPicture.querySelector('.picture__likes').textContent = userLike.textContent;
     window.data.photos[bigPictureId].likes = userLike.textContent;
   }
 

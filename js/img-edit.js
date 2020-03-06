@@ -77,7 +77,7 @@
         break;
 
       default:
-         throw new Error ('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + target.id);
+        throw new Error('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + imgOption.querySelector('input[type="radio"]:checked').value);
     }
   };
 
