@@ -52,7 +52,7 @@
     document.querySelector('.social__comments-loader').classList.remove('hidden');
   };
 
-  //Показ ошибки при загрузке массива с сервера
+  // Показ ошибки при загрузке массива с сервера
   var showError = function (errorMessage, detailedMessage) {
     var errorMess = document.createElement('div');
     errorMess.textContent = errorMessage;

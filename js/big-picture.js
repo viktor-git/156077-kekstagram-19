@@ -132,11 +132,11 @@
   var setNewLikesValue = function (openedBigPicture) {
     openedBigPicture.querySelector('.picture__likes').textContent = userLike.textContent;
     window.data.photos[bigPictureId].likes = userLike.textContent;
-  }
+  };
 
   userLike.addEventListener('click', function () {
     var LikeCount = +userLike.textContent;
-    var openedBigPicture = document.querySelector('[data-id="' + bigPictureId +'"]');
+    var openedBigPicture = document.querySelector('[data-id="' + bigPictureId + '"]');
 
     if (!userLike.classList.contains('likes-count--active')) {
       userLike.classList.add('likes-count--active');
@@ -152,6 +152,6 @@
 
       setNewLikesValue(openedBigPicture);
     }
-  })
+  });
 
 })();
