@@ -11,14 +11,14 @@
     return Math.floor(Math.random() * (max - min) + min);
   };
 
-  var randomArr = function (arr, randArrLength) {
+  var getRandArr = function (arr, randArrLength) {
     var randomArr = [];
     var copyArr = arr.slice();
 
-    var count = randArrLength;
+    var count = randArrLength || getRandomNum(1, copyArr.length - 1);
 
     for (var i = 0; i < count; i++) {
-      var randomIndex = window.util.getRandomNum(0, copyArr.length - 1);
+      var randomIndex = getRandomNum(0, copyArr.length - 1);
 
       randomArr.push(copyArr[randomIndex]);
       copyArr.splice(randomIndex, 1);
@@ -75,7 +75,7 @@
     closeImg: closeImg,
     showError: showError,
     removeElements: removeElements,
-    randomArr: randomArr,
+    getRandArr: getRandArr,
     sortArrDecrease: sortArrDecrease,
     sortArrIcrease: sortArrIncrease
   };

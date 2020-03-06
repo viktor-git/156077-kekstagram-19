@@ -28,7 +28,7 @@
     },
 
     random: function () {
-      var uniqueFilteredPhoto = window.util.randomArr(window.data.photos, 10);
+      var uniqueFilteredPhoto = window.util.getRandArr(window.data.photos, 10);
       replaceFilteredPhoto(uniqueFilteredPhoto);
     },
 
