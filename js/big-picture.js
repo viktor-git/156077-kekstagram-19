@@ -102,7 +102,6 @@
   var pictureOpenHandler = function (evt) {
     var target = evt.target;
     if (document.activeElement.classList.contains('picture') && evt.key === 'Enter') {
-      alert('123');
       document.addEventListener('keydown', btnClosePictureHandler);
       document.removeEventListener('keydown', pictureOpenHandler);
       showBigPicture(target.dataset.id);
