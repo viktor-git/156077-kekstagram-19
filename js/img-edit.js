@@ -27,6 +27,7 @@
 
   newImgCloseBtn.addEventListener('click', function () {
     window.util.closeImg();
+    document.removeEventListener('keydown', btnCloseNewImgHandler);
   });
 
   // Добавление эффектов
@@ -36,7 +37,6 @@
   var effectLine = imgEffectSlider.querySelector('.effect-level__line');
   var effectLineDepth = imgEffectSlider.querySelector('.effect-level__depth');
   var effectDepth = imgEffectSlider.querySelector('.effect-level__value');
-
 
   // Накладываем выбранный эффект на фото
   imgOption.addEventListener('click', function (evt) {
@@ -126,6 +126,9 @@
   var sizeDecreaseBtn = imgOption.querySelector('.scale__control--smaller');
 
   var sizeControl = imgOption.querySelector('.scale__control--value');
+  var sizeChangeStep = 25;
+  var sizeMin = 25;
+  var sizeMax = 100;
 
   var changeSizeValue = function (newSize) {
     sizeControl.value = newSize + '%';
@@ -143,11 +146,11 @@
   };
 
   sizeIncreaseBtn.addEventListener('click', function () {
-    getIcreaseChangedValue(25, 100);
+    getIcreaseChangedValue(sizeChangeStep, sizeMax);
   });
 
   sizeDecreaseBtn.addEventListener('click', function () {
-    getDecreaseChangedValue(25, 25);
+    getDecreaseChangedValue(sizeChangeStep, sizeMin);
   });
 
   // Валидация хештегов

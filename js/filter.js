@@ -15,24 +15,24 @@
 
   var pictureFilter = {
 
-    default: function () {
+    getDefault: function () {
       replaceFilteredPhoto(window.data.photos);
     },
 
-    random: function () {
-      var uniqueFilteredPhoto = window.util.getRandArr(window.data.photos, 10);
-      replaceFilteredPhoto(uniqueFilteredPhoto);
+    getRandom: function () {
+      var uniqueFilteredPhotos = window.util.getRandArr(window.data.photos, 10);
+      replaceFilteredPhoto(uniqueFilteredPhotos);
     },
 
-    discuss: function () {
-      var sortedPhoto;
+    getDiscuss: function () {
+      var sortedPhotos;
       if (window.data.filterPhotos.length !== 0) {
-        sortedPhoto = window.data.filterPhotos.slice().sort(window.util.sortArrDecrease);
+        sortedPhotos = window.data.filterPhotos.slice().sort(window.util.sortArrDecrease);
       } else {
-        sortedPhoto = window.data.photos.slice().sort(window.util.sortArrDecrease);
+        sortedPhotos = window.data.photos.slice().sort(window.util.sortArrDecrease);
       }
 
-      replaceFilteredPhoto(sortedPhoto);
+      replaceFilteredPhoto(sortedPhotos);
     }
   };
 
@@ -49,15 +49,15 @@
 
     switch (target.id) {
       case 'filter-random':
-        pictureFilter.random();
+        pictureFilter.getRandom();
         break;
 
       case 'filter-discussed':
-        pictureFilter.discuss();
+        pictureFilter.getDiscuss();
         break;
 
       case 'filter-default':
-        pictureFilter.default();
+        pictureFilter.getDefault();
         break;
 
       default:

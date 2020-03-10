@@ -4,7 +4,7 @@
 
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureId;
-  var COMMENTS_COUNTER = 5;
+  var commentsCounter = 5;
 
   //  Показываем увеличенное фото
   var showBigPicture = function (pictureId) {
@@ -30,8 +30,8 @@
     var bigPictureImg = bigPicture.querySelector('.big-picture__img img');
     bigPictureImg.src = pictureNumber.url;
 
-    var bigPictureDescr = bigPicture.querySelector('.big-picture__social .social__caption');
-    bigPictureDescr.textContent = pictureNumber.description;
+    var bigPictureDescription = bigPicture.querySelector('.big-picture__social .social__caption');
+    bigPictureDescription.textContent = pictureNumber.description;
 
     var bigPictureLikes = bigPicture.querySelector('.big-picture__social .likes-count');
     bigPictureLikes.textContent = pictureNumber.likes;
@@ -55,17 +55,17 @@
   //  Создаем массив комментариев для добавления к фото
   var createPictureComments = function (pictureNumber, commentsValueModifier) {
     var commentsCurrentValue = document.querySelector('.comments-current');
-    commentsCurrentValue.textContent = COMMENTS_COUNTER;
+    commentsCurrentValue.textContent = commentsCounter;
 
     var commentsFragment = new DocumentFragment();
 
     if (commentsValueModifier !== undefined) {
-      COMMENTS_COUNTER += commentsValueModifier;
+      commentsCounter += commentsValueModifier;
     } else {
-      COMMENTS_COUNTER = 5;
+      commentsCounter = 5;
     }
 
-    var loadCommentsValue = Math.min(pictureNumber.comments.length, COMMENTS_COUNTER);
+    var loadCommentsValue = Math.min(pictureNumber.comments.length, commentsCounter);
     commentsCurrentValue.textContent = loadCommentsValue;
 
     if (loadCommentsValue === pictureNumber.comments.length) {
@@ -91,6 +91,24 @@
   };
 
   // Открытие и закрытие полноэкранного изображения
+  var btnClosePictureHandler = function (evt) {
+    if (evt.key === 'Escape' && !document.activeElement.classList.contains('social__footer-text')) {
+      window.util.closeImg();
+      document.removeEventListener('keydown', btnClosePictureHandler);
+      document.addEventListener('keydown', pictureOpenHandler);
+    }
+  };
+
+  var pictureOpenHandler = function (evt) {
+    var target = evt.target;
+    if (document.activeElement.classList.contains('picture') && evt.key === 'Enter') {
+      alert('123');
+      document.addEventListener('keydown', btnClosePictureHandler);
+      document.removeEventListener('keydown', pictureOpenHandler);
+      showBigPicture(target.dataset.id);
+    }
+  };
+
   document.addEventListener('click', function (evt) {
     var target = evt.target;
     if (target.parentNode.classList.contains('picture')) {
@@ -99,25 +117,11 @@
     }
   });
 
-  var btnClosePictureHandler = function (evt) {
-    if (evt.key === 'Escape' && !document.activeElement.classList.contains('social__footer-text')) {
-      window.util.closeImg();
-      document.addEventListener('keydown', pictureOpenHandler);
-    }
-  };
-
-  var pictureOpenHandler = function (evt) {
-    var target = evt.target;
-    if (target.classList.contains('picture') && evt.key === 'Enter') {
-      document.addEventListener('keydown', btnClosePictureHandler);
-      showBigPicture(target.dataset.id);
-    }
-  };
-
   document.addEventListener('keydown', pictureOpenHandler);
 
   document.querySelector('#picture-cancel').addEventListener('click', function () {
     window.util.closeImg();
+    document.removeEventListener('keydown', btnClosePictureHandler);
     document.addEventListener('keydown', pictureOpenHandler);
   });
 
@@ -150,17 +154,15 @@
     if (!userLike.classList.contains('likes-count--active')) {
       userLike.classList.add('likes-count--active');
       openedBigPicture.classList.add('liked');
-      userLike.textContent = LikeCount + 1;
-
-      setNewLikesValue(openedBigPicture);
+      userLike.textContent = ++LikeCount;
 
     } else {
       userLike.classList.remove('likes-count--active');
       openedBigPicture.classList.remove('liked');
-      userLike.textContent = LikeCount - 1;
-
-      setNewLikesValue(openedBigPicture);
+      userLike.textContent = --LikeCount;
     }
+
+    setNewLikesValue(openedBigPicture);
   });
 
 })();
