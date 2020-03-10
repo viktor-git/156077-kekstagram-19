@@ -13,8 +13,13 @@
 
     bigPicture.classList.remove('hidden');
 
-    fillBigPictureInfo(window.data.photos[pictureId]);
-    addPictureComments(window.data.photos[pictureId]);
+    if (window.data.filterPhotos.length !== 0) {
+      fillBigPictureInfo(window.data.filterPhotos[pictureId]);
+      addPictureComments(window.data.filterPhotos[pictureId]);
+    } else {
+      fillBigPictureInfo(window.data.photos[pictureId]);
+      addPictureComments(window.data.photos[pictureId]);
+    }
 
     document.removeEventListener('keydown', pictureOpenHandler);
 

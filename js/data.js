@@ -39,6 +39,7 @@
 
   window.data = {
     photos: [],
+    filterPhotos: [],
     load: function (onSuccess, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';

@@ -25,7 +25,12 @@
     },
 
     discuss: function () {
-      var sortedPhoto = window.data.photos.slice().sort(window.util.sortArrDecrease);
+      if (window.data.filterPhotos.length !== 0) {
+        var sortedPhoto = window.data.filterPhotos.slice().sort(window.util.sortArrDecrease);
+      } else {
+        var sortedPhoto = window.data.photos.slice().sort(window.util.sortArrDecrease);
+      }
+
       replaceFilteredPhoto(sortedPhoto);
     }
   };

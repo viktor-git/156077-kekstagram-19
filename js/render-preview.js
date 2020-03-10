@@ -23,8 +23,9 @@
     document.querySelector('.pictures').append(fragment);
 
     if (!isFilter) {
-      debugger;
       window.data.photos = photoArray;
+    } else {
+      window.data.filterPhotos = photoArray;
     }
   };
 
