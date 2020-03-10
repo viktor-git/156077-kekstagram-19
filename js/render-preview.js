@@ -13,7 +13,7 @@
     return pictureTemplateClone;
   };
 
-  var addPictures = function (photoArray) {
+  var addPictures = function (photoArray, isFilter) {
     var fragment = new DocumentFragment();
 
     for (var i = 0; i < photoArray.length; i++) {
@@ -22,8 +22,10 @@
 
     document.querySelector('.pictures').append(fragment);
 
-    window.data.photos = photoArray;
-
+    if (!isFilter) {
+      debugger;
+      window.data.photos = photoArray;
+    }
   };
 
   window.data.load(addPictures, window.util.showError);

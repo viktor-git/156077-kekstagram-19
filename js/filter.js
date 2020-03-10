@@ -2,29 +2,21 @@
 
 (function () {
 
-  var DEFAULT_PICTURES;
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     });
   }
 
-  var createDefaultPictures = function () {
-    if (DEFAULT_PICTURES === undefined) {
-      DEFAULT_PICTURES = window.data.photos.slice();
-    }
-  };
-
   var replaceFilteredPhoto = function (filteredArr) {
     window.util.removeElements(document.querySelectorAll('.pictures .picture'));
-    window.renderPreview.addPictures(filteredArr);
+    window.renderPreview.addPictures(filteredArr, true);
   };
 
   var pictureFilter = {
 
     default: function () {
-      replaceFilteredPhoto(DEFAULT_PICTURES);
+      replaceFilteredPhoto(window.data.photos);
     },
 
     random: function () {
@@ -33,7 +25,7 @@
     },
 
     discuss: function () {
-      var sortedPhoto = window.data.photos.sort(window.util.sortArrDecrease);
+      var sortedPhoto = window.data.photos.slice().sort(window.util.sortArrDecrease);
       replaceFilteredPhoto(sortedPhoto);
     }
   };
@@ -48,7 +40,6 @@
   // Фильтруем фото
   var filterBtnClickHandler = window.debounce(function (evt) {
     var target = evt.target;
-    createDefaultPictures();
 
     switch (target.id) {
       case 'filter-random':
