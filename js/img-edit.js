@@ -2,12 +2,13 @@
 
 (function () {
 
+
   var imgOption = document.querySelector('.img-upload__overlay');
   var newImgCloseBtn = imgOption.querySelector('.img-upload__cancel');
   var uploadBtn = document.querySelector('#upload-file');
 
   var btnCloseNewImgHandler = function (evt) {
-    if (evt.key === 'Escape' && !document.activeElement.parentNode.classList.contains('img-upload__text')) {
+    if (window.util.keyPress.escape(evt.key) && !document.activeElement.parentNode.classList.contains('img-upload__text')) {
       window.util.closeImg();
       document.removeEventListener('keydown', btnCloseNewImgHandler);
     }
@@ -36,7 +37,7 @@
   var effectPin = imgEffectSlider.querySelector('.effect-level__pin');
   var effectLine = imgEffectSlider.querySelector('.effect-level__line');
   var effectLineDepth = imgEffectSlider.querySelector('.effect-level__depth');
-  var effectDepth = imgEffectSlider.querySelector('.effect-level__value');
+  var effectDepthValue = imgEffectSlider.querySelector('.effect-level__value').value;
 
   // Накладываем выбранный эффект на фото
   imgOption.addEventListener('click', function (evt) {
@@ -53,32 +54,59 @@
 
   });
 
-  // Функция установки глубины эффекта
-  var setEffecsDepth = function () {
-    switch (imgOption.querySelector('input[type="radio"]:checked').value) {
-      case 'chrome':
-        imgPreview.style.filter = 'grayscale(' + (effectDepth.value / 100) + ')';
-        break;
+  var filterValueSettings= {
+    chrome: {
+      name: 'chrome',
+      filter: 'grayscale',
+      min: 0,
+      max: 1,
+      unit: ''
+    },
 
-      case 'sepia':
-        imgPreview.style.filter = 'sepia(' + (effectDepth.value / 100) + ')';
-        break;
+    sepia: {
+      name: 'sepia',
+      filter: 'sepia',
+      min: 0,
+      max: 1,
+      unit: ''
+    },
 
-      case 'marvin':
-        imgPreview.style.filter = 'invert(' + effectDepth.value + '%' + ')';
-        break;
+    marvin: {
+      name: 'marvin',
+      filter: 'invert',
+      min: 0,
+      max: 100,
+      unit: '%'
+    },
 
-      case 'phobos':
-        imgPreview.style.filter = 'blur(' + (3 * effectDepth.value / 100) + 'px' + ')';
-        break;
+    phobos: {
+      name: 'phobos',
+      filter: 'blur',
+      min: 0,
+      max: 3,
+      unit: 'px'
+    },
 
-      case 'heat':
-        imgPreview.style.filter = 'brightness(' + (2 * effectDepth.value / 100 + 1) + ')';
-        break;
-
-      default:
-        throw new Error('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + imgOption.querySelector('input[type="radio"]:checked').value);
+    heat: {
+      name: 'heat',
+      filter: 'brightness',
+      min: 1,
+      max: 2,
+      unit: ''
     }
+  };
+
+  // Функция установки глубины эффекта
+  var setEffectsDepth = function () {
+
+    for (var key in filterValueSettings) {
+
+      if (filterValueSettings[key].name === imgOption.querySelector('input[type="radio"]:checked').value) {
+        return imgPreview.style.filter = filterValueSettings[key].filter + '(' + (filterValueSettings[key].max * effectDepthValue / 100 + filterValueSettings[key].min) + filterValueSettings[key].unit + ')';
+      }
+    }
+
+    throw new Error('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + imgOption.querySelector('input[type="radio"]:checked').value);
   };
 
   // Меняем глубину эффекта
@@ -109,9 +137,9 @@
 
     var mouseUpHandler = function (evtUp) {
       evtUp.preventDefault();
-      effectDepth.value = parseInt(effectPin.style.left, 10);
+      effectDepthValue = parseInt(effectPin.style.left, 10);
 
-      setEffecsDepth();
+      setEffectsDepth();
 
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
@@ -255,7 +283,7 @@
     };
 
     var successMessageRemoveKeyHandler = function (evtKey) {
-      if (evtKey.key === 'Escape') {
+      if (window.util.keyPress.escape(evtKey.key)) {
         closeMessage('main .success');
       }
     };
@@ -268,7 +296,7 @@
     };
 
     var errorMessageRemoveKeyHandler = function (evtKey) {
-      if (evtKey.key === 'Escape') {
+      if (window.util.keyPress.escape(evtKey.key)) {
         closeMessage('main .error');
       }
     };
@@ -291,7 +319,7 @@
     sizeControl.value = 100 + '%';
     imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
     imgEffectSlider.classList.add('visually-hidden');
-    effectDepth.value = 100;
+    effectDepthValue = 100;
     imgOption.querySelector('.effects__list:first-child input').checked = true;
 
     var imgText = imgOption.querySelectorAll('.img-upload__text [class^="text__"]');

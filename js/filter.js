@@ -14,7 +14,6 @@
   };
 
   var pictureFilter = {
-
     getDefault: function () {
       replaceFilteredPhoto(window.data.photos);
     },
@@ -26,7 +25,7 @@
 
     getDiscuss: function () {
       var sortedPhotos;
-      if (window.data.filterPhotos.length !== 0) {
+      if (window.data.filterPhotos.length) {
         sortedPhotos = window.data.filterPhotos.slice().sort(window.util.sortArrDecrease);
       } else {
         sortedPhotos = window.data.photos.slice().sort(window.util.sortArrDecrease);

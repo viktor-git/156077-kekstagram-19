@@ -43,6 +43,15 @@
     });
   };
 
+  var keyPress= {
+    escape: function (evtKey) {
+      return (evtKey === 'Escape');
+    },
+    enter: function (evtKey) {
+      return (evtKey === 'Enter');
+    }
+  }
+
   // Закрытие изображений
   var closeImg = function () {
     document.querySelector('.img-upload__overlay').classList.add('hidden');
@@ -77,7 +86,8 @@
     removeElements: removeElements,
     getRandArr: getRandArr,
     sortArrDecrease: sortArrDecrease,
-    sortArrIcrease: sortArrIncrease
+    sortArrIcrease: sortArrIncrease,
+    keyPress: keyPress
   };
 
 })();

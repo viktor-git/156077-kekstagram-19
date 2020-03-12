@@ -13,7 +13,7 @@
 
     bigPicture.classList.remove('hidden');
 
-    if (window.data.filterPhotos.length !== 0) {
+    if (window.data.filterPhotos.length) {
       fillBigPictureInfo(window.data.filterPhotos[pictureId]);
       addPictureComments(window.data.filterPhotos[pictureId]);
     } else {
@@ -92,7 +92,7 @@
 
   // Открытие и закрытие полноэкранного изображения
   var btnClosePictureHandler = function (evt) {
-    if (evt.key === 'Escape' && !document.activeElement.classList.contains('social__footer-text')) {
+    if (window.util.keyPress.escape(evt.key) && !document.activeElement.classList.contains('social__footer-text')) {
       window.util.closeImg();
       document.removeEventListener('keydown', btnClosePictureHandler);
       document.addEventListener('keydown', pictureOpenHandler);
@@ -101,7 +101,7 @@
 
   var pictureOpenHandler = function (evt) {
     var target = evt.target;
-    if (document.activeElement.classList.contains('picture') && evt.key === 'Enter') {
+    if (document.activeElement.classList.contains('picture') && window.util.keyPress.enter(evt.key)) {
       document.addEventListener('keydown', btnClosePictureHandler);
       document.removeEventListener('keydown', pictureOpenHandler);
       showBigPicture(target.dataset.id);

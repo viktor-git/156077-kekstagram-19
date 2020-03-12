@@ -5,11 +5,12 @@
   var TIMEOUT_IN_MS = 10000;
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
   var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+  var SUCCESS_SERVER_REQUEST = 200;
 
   var makeRequest = function (onSuccess, onError, xhr, type) {
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_SERVER_REQUEST) {
         onSuccess(xhr.response);
       } else if (type === 'GET') {
         onError('Статус ответа: ' + xhr.status, 'Проверьте корректность запрашиваемого URL');
