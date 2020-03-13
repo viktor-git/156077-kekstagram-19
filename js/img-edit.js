@@ -6,10 +6,11 @@
   var SIZE_MIN = 25;
   var SIZE_MAX = 100;
   var PIN_POSITION_MAX = 100;
-  var PIN_POSITION_MIN = 100;
+  var PIN_POSITION_MIN = 0;
   var HASHTAGS_MAX_NUMBER = 5;
   var HASHTAGS_CHAR_MAX = 20;
   var HASHTAGS_CHAR_MIN = 1;
+  var PHOTO_START_SETTINGS_VALUE = 100;
 
   var imgOption = document.querySelector('.img-upload__overlay');
   var newImgCloseBtn = imgOption.querySelector('.img-upload__cancel');
@@ -173,11 +174,11 @@
   };
 
   sizeIncreaseBtn.addEventListener('click', function () {
-    getIcreaseChangedValue(SIZE_CHANGE_STEP, SIZE_MIN);
+    getIcreaseChangedValue(SIZE_CHANGE_STEP, SIZE_MAX);
   });
 
   sizeDecreaseBtn.addEventListener('click', function () {
-    getDecreaseChangedValue(SIZE_CHANGE_STEP, SIZE_MAX);
+    getDecreaseChangedValue(SIZE_CHANGE_STEP, SIZE_MIN);
   });
   // Валидация хештегов
 
@@ -319,10 +320,10 @@
 
   // Устанавливаем стартовые значения при загрузке фото
   var setPhotoStartSettings = function () {
-    sizeControl.value = 100 + '%';
+    sizeControl.value = PHOTO_START_SETTINGS_VALUE + '%';
     imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
     imgEffectSlider.classList.add('visually-hidden');
-    effectDepthValue = 100;
+    effectDepthValue = PHOTO_START_SETTINGS_VALUE;
     imgOption.querySelector('.effects__list:first-child input').checked = true;
 
     var imgText = imgOption.querySelectorAll('.img-upload__text [class^="text__"]');
@@ -340,10 +341,10 @@
       imgEffectSlider.classList.remove('visually-hidden');
     }
 
-    effectPin.style.left = '100%';
-    effectLineDepth.style.width = '100%';
+    effectPin.style.left = PHOTO_START_SETTINGS_VALUE +'%';
+    effectLineDepth.style.width = PHOTO_START_SETTINGS_VALUE +'%';
 
-    sizeControl.value = 100 + '%';
+    sizeControl.value = PHOTO_START_SETTINGS_VALUE +'%';
     imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
   };
 
