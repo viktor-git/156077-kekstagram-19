@@ -2,14 +2,16 @@
 
 (function () {
 
+  var COMMENTS_VALUE_START = 5;
+  var COMMENTS_MODIFIER_VALUE = 5;
+
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureId;
-  var commentsCounter = 5;
 
   //  Показываем увеличенное фото
   var showBigPicture = function (pictureId) {
     bigPictureId = pictureId;
-    document.querySelector('body').classList.add('modal-open');
+    document.body.classList.add('modal-open');
 
     bigPicture.classList.remove('hidden');
 
@@ -53,16 +55,18 @@
   };
 
   //  Создаем массив комментариев для добавления к фото
+  var commentsCurrentValue = document.querySelector('.comments-current');
+  var commentsCounter = COMMENTS_VALUE_START;
+
   var createPictureComments = function (pictureNumber, commentsValueModifier) {
-    var commentsCurrentValue = document.querySelector('.comments-current');
-    commentsCurrentValue.textContent = commentsCounter;
+    commentsCurrentValue.textContent = Math.min(commentsCounter, pictureNumber.comments.length);
 
     var commentsFragment = new DocumentFragment();
 
     if (commentsValueModifier !== undefined) {
       commentsCounter += commentsValueModifier;
     } else {
-      commentsCounter = 5;
+     commentsCounter = COMMENTS_VALUE_START;
     }
 
     var loadCommentsValue = Math.min(pictureNumber.comments.length, commentsCounter);
@@ -80,8 +84,10 @@
   };
 
   //  Получаем комментарий для добавления к фото
+  var bigPictureUserCommentTemplate = document.querySelector('.social__comment');
+
   var createPictureComment = function (pictureComment) {
-    var bigPictureUserComment = document.querySelector('.social__comment').cloneNode(true);
+    var bigPictureUserComment = bigPictureUserCommentTemplate.cloneNode(true);
 
     bigPictureUserComment.querySelector('.social__picture').src = pictureComment.avatar;
     bigPictureUserComment.querySelector('.social__picture').alt = pictureComment.name;
@@ -127,14 +133,15 @@
   // Подгрузка комментариев
   var commentsUploadBtn = document.querySelector('.social__comments-loader');
   commentsUploadBtn.addEventListener('click', function () {
-    addPictureComments(window.data.photos[bigPictureId], 5);
+    addPictureComments(window.data.photos[bigPictureId], COMMENTS_MODIFIER_VALUE);
   });
 
   // Лайки
   var userLike = document.querySelector('.likes-count');
+  var picturesElement = document.querySelector('.pictures');
 
   var checkLikePut = function () {
-    if (!document.querySelector('[data-id="' + bigPictureId + '"]').classList.contains('liked')) {
+    if (!picturesElement.querySelector('[data-id="' + bigPictureId + '"]').classList.contains('liked')) {
       userLike.classList.remove('likes-count--active');
     } else {
       userLike.classList.add('likes-count--active');
@@ -148,7 +155,7 @@
 
   userLike.addEventListener('click', function () {
     var LikeCount = +userLike.textContent;
-    var openedBigPicture = document.querySelector('[data-id="' + bigPictureId + '"]');
+    var openedBigPicture = picturesElement.querySelector('[data-id="' + bigPictureId + '"]');
 
     if (!userLike.classList.contains('likes-count--active')) {
       userLike.classList.add('likes-count--active');

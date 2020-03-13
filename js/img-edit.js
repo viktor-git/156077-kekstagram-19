@@ -2,6 +2,14 @@
 
 (function () {
 
+  var SIZE_CHANGE_STEP = 25;
+  var SIZE_MIN = 25;
+  var SIZE_MAX = 100;
+  var PIN_POSITION_MAX = 100;
+  var PIN_POSITION_MIN = 100;
+  var HASHTAGS_MAX_NUMBER = 5;
+  var HASHTAGS_CHAR_MAX = 20;
+  var HASHTAGS_CHAR_MIN = 1;
 
   var imgOption = document.querySelector('.img-upload__overlay');
   var newImgCloseBtn = imgOption.querySelector('.img-upload__cancel');
@@ -54,9 +62,8 @@
 
   });
 
-  var filterValueSettings= {
+  var filterValueSettings = {
     chrome: {
-      name: 'chrome',
       filter: 'grayscale',
       min: 0,
       max: 1,
@@ -64,7 +71,6 @@
     },
 
     sepia: {
-      name: 'sepia',
       filter: 'sepia',
       min: 0,
       max: 1,
@@ -72,7 +78,6 @@
     },
 
     marvin: {
-      name: 'marvin',
       filter: 'invert',
       min: 0,
       max: 100,
@@ -80,7 +85,6 @@
     },
 
     phobos: {
-      name: 'phobos',
       filter: 'blur',
       min: 0,
       max: 3,
@@ -88,7 +92,6 @@
     },
 
     heat: {
-      name: 'heat',
       filter: 'brightness',
       min: 1,
       max: 2,
@@ -101,12 +104,12 @@
 
     for (var key in filterValueSettings) {
 
-      if (filterValueSettings[key].name === imgOption.querySelector('input[type="radio"]:checked').value) {
+      if (key === imgOption.querySelector('input[type="radio"]:checked').value) {
         return imgPreview.style.filter = filterValueSettings[key].filter + '(' + (filterValueSettings[key].max * effectDepthValue / 100 + filterValueSettings[key].min) + filterValueSettings[key].unit + ')';
       }
     }
 
-    throw new Error('Вероятно появился новый фильтр вне списка. Проверьте значение: ' + imgOption.querySelector('input[type="radio"]:checked').value);
+    throw new Error('Появился новый фильтр вне списка. Проверьте значение: ' + imgOption.querySelector('input[type="radio"]:checked').value);
   };
 
   // Меняем глубину эффекта
@@ -123,12 +126,12 @@
 
       var endPinPosition = (effectPin.offsetLeft - shift) / effectLine.clientWidth * 100;
 
-      if (endPinPosition > 100) {
-        endPinPosition = 100;
+      if (endPinPosition > PIN_POSITION_MAX) {
+        endPinPosition = PIN_POSITION_MAX;
       }
 
-      if (endPinPosition < 0) {
-        endPinPosition = 0;
+      if (endPinPosition < PIN_POSITION_MIN) {
+        endPinPosition = PIN_POSITION_MIN;
       }
 
       effectPin.style.left = endPinPosition + '%';
@@ -152,11 +155,7 @@
   // Изменение размеров изображения
   var sizeIncreaseBtn = imgOption.querySelector('.scale__control--bigger');
   var sizeDecreaseBtn = imgOption.querySelector('.scale__control--smaller');
-
   var sizeControl = imgOption.querySelector('.scale__control--value');
-  var sizeChangeStep = 25;
-  var sizeMin = 25;
-  var sizeMax = 100;
 
   var changeSizeValue = function (newSize) {
     sizeControl.value = newSize + '%';
@@ -174,16 +173,17 @@
   };
 
   sizeIncreaseBtn.addEventListener('click', function () {
-    getIcreaseChangedValue(sizeChangeStep, sizeMax);
+    getIcreaseChangedValue(SIZE_CHANGE_STEP, SIZE_MIN);
   });
 
   sizeDecreaseBtn.addEventListener('click', function () {
-    getDecreaseChangedValue(sizeChangeStep, sizeMin);
+    getDecreaseChangedValue(SIZE_CHANGE_STEP, SIZE_MAX);
   });
-
   // Валидация хештегов
+
+  var imgText = document.querySelector('.img-upload__text');
   document.querySelector('#upload-submit').addEventListener('click', function () {
-    var imgHashTag = document.querySelector('.text__hashtags');
+    var imgHashTag = imgText.querySelector('.text__hashtags');
     var hashTags = imgHashTag.value.toLowerCase().split(' ');
 
     if (!validateHashTags(hashTags, imgHashTag)) {
@@ -196,7 +196,7 @@
   var validateHashTags = function (hashArray, validateField) {
 
     // Проверка количества хештегов
-    if (hashArray.length > 5) {
+    if (hashArray.length > HASHTAGS_MAX_NUMBER) {
       validateField.setCustomValidity('Нельзя указывать более 5 хештегов');
       validateField.reportValidity();
       return false;
@@ -224,13 +224,13 @@
           }
         }
         // Проверка длины хештега
-        if (hashArray[i].length > 20) {
+        if (hashArray[i].length > HASHTAGS_CHAR_MAX) {
           validateField.setCustomValidity('Хештег не должен превышать 20 символов, включая #');
           validateField.reportValidity();
           return false;
         }
         // Проверка на односимвольность
-        if (hashArray[i].length === 1 && hashArray[i].charAt(0) === '#') {
+        if (hashArray[i].length === HASHTAGS_CHAR_MIN && hashArray[i].charAt(0) === '#') {
           validateField.setCustomValidity('Хештег пустой');
           validateField.reportValidity();
           return false;
@@ -249,6 +249,9 @@
 
   // Отправка формы AJAX
   var form = document.querySelector('.img-upload__form');
+  var successMessageTemplate = document.querySelector('#success');
+  var errorMessageTemplate = document.querySelector('#error');
+  var mainElement = document.querySelector('main');
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
@@ -257,8 +260,8 @@
       window.util.closeImg();
       clearEffects();
       setPhotoStartSettings();
-      var successMessage = document.querySelector('#success').content.cloneNode(true);
-      document.querySelector('main').append(successMessage);
+      var successMessage = successMessageTemplate.content.cloneNode(true);
+      mainElement.append(successMessage);
 
       document.addEventListener('click', successMessageRemoveClickHandler);
       document.addEventListener('keydown', successMessageRemoveKeyHandler);
@@ -268,7 +271,7 @@
       window.util.closeImg();
       clearEffects();
       setPhotoStartSettings();
-      var errorMessage = document.querySelector('#error').content.cloneNode(true);
+      var errorMessage = errorMessageTemplate.content.cloneNode(true);
       document.querySelector('main').append(errorMessage);
 
       document.addEventListener('click', errorMessageRemoveClickHandler);
@@ -302,7 +305,7 @@
     };
 
     var closeMessage = function (selector) {
-      document.querySelector(selector).remove();
+      mainElement.querySelector(selector).remove();
 
       document.removeEventListener('click', errorMessageRemoveClickHandler);
       document.removeEventListener('keydown', errorMessageRemoveKeyHandler);

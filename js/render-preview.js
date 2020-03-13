@@ -3,8 +3,11 @@
 (function () {
 
   //  Создаем фото для добавления в DOM на основе шаблона
+  var pictureTemplate = document.querySelector('#picture')
+  var picturesElement = document.querySelector('.pictures')
+
   var createPicture = function (picture, arrItem) {
-    var pictureTemplateClone = document.querySelector('#picture').content.cloneNode(true);
+    var pictureTemplateClone = pictureTemplate.content.cloneNode(true);
 
     pictureTemplateClone.querySelector('.picture__img').src = picture.url;
     pictureTemplateClone.querySelector('.picture__likes').textContent = picture.likes;
@@ -20,7 +23,7 @@
       fragment.append(createPicture(photoArray[i], i));
     }
 
-    document.querySelector('.pictures').append(fragment);
+    picturesElement.append(fragment);
 
     if (!isFilter) {
       window.data.photos = photoArray;

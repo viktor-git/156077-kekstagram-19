@@ -43,6 +43,7 @@
     });
   };
 
+  // Проверка нажатия клавиши
   var keyPress= {
     escape: function (evtKey) {
       return (evtKey === 'Escape');
@@ -53,12 +54,17 @@
   }
 
   // Закрытие изображений
+  var uploadBtn = document.querySelector('#upload-file');
+  var bigPicture = document.querySelector('.big-picture');
+  var imgOption = document.querySelector('.img-upload__overlay');
+  var commentsUploadBtn = document.querySelector('.social__comments-loader');
+
   var closeImg = function () {
-    document.querySelector('.img-upload__overlay').classList.add('hidden');
-    document.querySelector('.big-picture').classList.add('hidden');
+    imgOption.classList.add('hidden');
+    bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    document.querySelector('#upload-file').value = '';
-    document.querySelector('.social__comments-loader').classList.remove('hidden');
+    uploadBtn.value = '';
+    commentsUploadBtn.classList.remove('hidden');
   };
 
   // Показ ошибки при загрузке массива с сервера
@@ -74,7 +80,7 @@
     errorMess.append(additionalMessage);
     document.body.prepend(errorMess);
 
-    document.querySelector('#upload-file').disabled = true;
+    uploadBtn.disabled = true;
   };
 
   // Экспорт
