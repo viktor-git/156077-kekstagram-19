@@ -63,7 +63,7 @@
     if (commentsValueModifier !== undefined) {
       commentsCounter += commentsValueModifier;
     } else {
-     commentsCounter = COMMENTS_VALUE_START;
+      commentsCounter = COMMENTS_VALUE_START;
     }
 
     var loadCommentsValue = Math.min(pictureNumber.comments.length, commentsCounter);

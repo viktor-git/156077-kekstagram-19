@@ -106,7 +106,8 @@
     for (var key in filterValueSettings) {
 
       if (key === imgOption.querySelector('input[type="radio"]:checked').value) {
-        return imgPreview.style.filter = filterValueSettings[key].filter + '(' + (filterValueSettings[key].max * effectDepthValue / 100 + filterValueSettings[key].min) + filterValueSettings[key].unit + ')';
+        imgPreview.style.filter = filterValueSettings[key].filter + '(' + (filterValueSettings[key].max * effectDepthValue / 100 + filterValueSettings[key].min) + filterValueSettings[key].unit + ')';
+        return true;
       }
     }
 
@@ -319,6 +320,7 @@
   });
 
   // Устанавливаем стартовые значения при загрузке фото
+  var imgTextNodeList = imgOption.querySelectorAll('.img-upload__text [class^="text__"]');
   var setPhotoStartSettings = function () {
     sizeControl.value = PHOTO_START_SETTINGS_VALUE + '%';
     imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
@@ -326,9 +328,8 @@
     effectDepthValue = PHOTO_START_SETTINGS_VALUE;
     imgOption.querySelector('.effects__list:first-child input').checked = true;
 
-    var imgText = imgOption.querySelectorAll('.img-upload__text [class^="text__"]');
-    for (var i = 0; i < imgText.length; i++) {
-      imgText[i].value = '';
+    for (var i = 0; i < imgTextNodeList.length; i++) {
+      imgTextNodeList[i].value = '';
     }
   };
 
@@ -341,13 +342,11 @@
       imgEffectSlider.classList.remove('visually-hidden');
     }
 
-    effectPin.style.left = PHOTO_START_SETTINGS_VALUE +'%';
-    effectLineDepth.style.width = PHOTO_START_SETTINGS_VALUE +'%';
+    effectPin.style.left = PHOTO_START_SETTINGS_VALUE + '%';
+    effectLineDepth.style.width = PHOTO_START_SETTINGS_VALUE + '%';
 
-    sizeControl.value = PHOTO_START_SETTINGS_VALUE +'%';
+    sizeControl.value = PHOTO_START_SETTINGS_VALUE + '%';
     imgPreview.style.transform = 'scale(' + (parseInt(sizeControl.value, 10) / 100) + ')';
   };
 
 })();
-
-

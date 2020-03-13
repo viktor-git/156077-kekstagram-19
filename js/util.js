@@ -44,14 +44,14 @@
   };
 
   // Проверка нажатия клавиши
-  var keyPress= {
+  var keyPress = {
     escape: function (evtKey) {
       return (evtKey === 'Escape');
     },
     enter: function (evtKey) {
       return (evtKey === 'Enter');
     }
-  }
+  };
 
   // Закрытие изображений
   var uploadBtn = document.querySelector('#upload-file');

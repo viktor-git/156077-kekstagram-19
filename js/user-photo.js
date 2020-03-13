@@ -7,7 +7,6 @@
 
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
-    var fileName = file.name.toLowerCase();
 
     var reader = new FileReader();
 
@@ -15,7 +14,7 @@
       preview.src = reader.result;
     });
 
-      reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
   });
 
 })();
