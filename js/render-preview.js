@@ -3,16 +3,21 @@
 (function () {
 
   //  Создаем фото для добавления в DOM на основе шаблона
-  var pictureTemplate = document.querySelector('#picture')
-  var picturesElement = document.querySelector('.pictures')
+  var pictureTemplate = document.querySelector('#picture');
+  var picturesElement = document.querySelector('.pictures');
+  var pictureTemplateImg = pictureTemplate.content.querySelector('.picture__img');
+  var pictureTemplateLike = pictureTemplate.content.querySelector('.picture__likes');
+  var pictureTemplateCommentsValue = pictureTemplate.content.querySelector('.picture__comments');
+  var pictureTemplateElement = pictureTemplate.content.querySelector('.picture');
 
   var createPicture = function (picture, arrItem) {
-    var pictureTemplateClone = pictureTemplate.content.cloneNode(true);
 
-    pictureTemplateClone.querySelector('.picture__img').src = picture.url;
-    pictureTemplateClone.querySelector('.picture__likes').textContent = picture.likes;
-    pictureTemplateClone.querySelector('.picture__comments').textContent = picture.comments.length;
-    pictureTemplateClone.querySelector('.picture').setAttribute('data-id', arrItem);
+    pictureTemplateImg.src = picture.url;
+    pictureTemplateLike.textContent = picture.likes;
+    pictureTemplateCommentsValue.textContent = picture.comments.length;
+    pictureTemplateElement.setAttribute('data-id', arrItem);
+
+    var pictureTemplateClone = pictureTemplate.content.cloneNode(true);
     return pictureTemplateClone;
   };
 
