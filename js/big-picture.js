@@ -132,7 +132,12 @@
   // Подгрузка комментариев
   var commentsUploadBtn = document.querySelector('.social__comments-loader');
   commentsUploadBtn.addEventListener('click', function () {
-    addPictureComments(window.data.photos[bigPictureId], COMMENTS_MODIFIER_VALUE);
+    if (window.data.filterPhotos.length) {
+      addPictureComments(window.data.filterPhotos[bigPictureId], COMMENTS_MODIFIER_VALUE);
+    } else {
+      addPictureComments(window.data.photos[bigPictureId], COMMENTS_MODIFIER_VALUE);
+    }
+
   });
 
   // Лайки

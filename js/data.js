@@ -3,8 +3,8 @@
 (function () {
 
   var TIMEOUT_IN_MS = 10000;
-  var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
-  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+  var LOAD_URL = 'https://javascript.pages.academy/kekstagram/data';
+  var UPLOAD_URL = 'https://javascript.pages.academy/kekstagram';
   var SUCCESS_SERVER_REQUEST = 200;
 
   var makeRequest = function (onSuccess, onError, xhr, type) {
